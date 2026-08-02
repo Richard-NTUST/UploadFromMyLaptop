@@ -1,0 +1,119 @@
+YMA-Thesis 
+
+2026 0707 P6、我現在要量的是硬體還是軟體?
+2026 0707 P10、我現在是要解決或改善YAM的哪個問題? 有確定嗎? 還是說就接學長姊的?
+
+
+2026 0707 daily report.md
+G1、閱讀 YMA Thesis 
+M1. 切分閱讀量
+M2. 閱讀完整篇
+
+G2、對 YAM Thesis 進行研究
+M1. 重現實驗
+M2. 提出可能的問題
+M3. 提出自己不懂的問題
+
+
+
+Gem
+1、將白話文轉為MD檔案
+2、一篇論文一個對話紀錄
+3、搭配Claude一起學，等到7/17新模型上架
+
+
+
+7/9 weekly meeting 整理
+1、透過 LINE 存取到 Tooby 學長的 Handover 資料連結，並與 Ian 確認
+2、看到 Winnie 學姊的 Handover 整理
+3、Ian 在會議中有展現推薦的 Git 文件整理方式，並提到 draw.io 製作流程圖
+4、實驗室目前沒有 AI agent 的 team plan，後續事情望考慮是否有需要才用金費訂閱
+5、Tobby 與 Ian 建議先以碩士生 Hamdover 的資料為優先學習，而不是 TEEP 計畫的 David
+6、應測試 Team 會議系統來確保螢幕廣播的順暢
+
+
+7/14 印尼網路 O-RAN 架構升級之演講
+
+
+8/20 TEEP 實習生們回國 meeting，最後要離開前
+
+電腦是 Windows 11 64G 家用版, 不能用claude cowork，因為缺少 VM 權限，只能用claude code
+
+
+
+
+
+
+
+
+6/22 14:00
+1、Intro
+Power 的 model
+異質網路，基台大小，彼此loading balance
+比較不同方式的差異(3篇)，做出論文改善點
+驗證結果(幾個指標)，用演算法(選擇最佳性的問題)，實驗的過程
+套用model 的前提，比較的客觀性
+待解的問題，是自己假設的，還是有實際問題待解決
+如果大基站有overlap，中間有重疊的小基站，小基站如何關?
+
+2、system
+時間的選擇是重點，為何是此間，如果比較不同參數會怎樣?
+System 架構中，絕對不會有Constant，要用變數來表示
+
+3、method
+ES rapp、ES xapp
+上行、下行
+方式的選擇，用另外一種方式會怎樣
+解釋詳細一點，不然回答是不完整、是錯誤的
+節能，關閉基站，就是改變拓樸
+縮寫要解釋全名，然後解釋概念，舉例說明為何會這樣
+
+是假設均勻的，那組合數問題，變成是個數問題
+先講設計概念，再講implement的方式
+數據精確度，統計要清楚
+啟發式演算法、排序，降低空間複雜度
+
+跟時間有關的，也就是區間，跟system的10分鐘有關嗎?
+設計開與設計關的演算法，是獨立的，那麼有可能合併嗎?
+
+關基站前，透過E2來做handover
+
+
+4、result
+
+5、conclusion
+結論有on 跟 off，所以video也要有兩個東西
+
+6、口委問題
+如果直接把這個成果拿來公司用，敢嗎? 如果不敢，是哪裡有問題
+
+
+
+
+
+
+0728 meeting link :
+
+了解此meeting能知道SOP，以及實驗室的架構
+1. 想問比對系統呢？時時確保自己的成果是OK的
+2. 想問QoS的那個課程，大四學長有修嗎? 還是說指給碩? 很硬嗎?
+09:10 – Ian 在介紹 leaving-procedure
+09:18 – Clone SOP 到自己的 git，會一對一檢查。有流程圖再去檢查
+09:30 – Ian 要補4個LLM的記憶，在leaving-procedure 的5.12
+09:32 – leaving-procedure 的 D與E項，可能可以先pass，還在施工，待確認
+09:35 – knowledge_transfer vs leaving-procedure，後者是更詳細的模板，如果前者不夠詳細的話
+09:40 – 把自己的成果，連接到實驗室的github，要怎麼做
+09:45 – Template是幹嘛用的
+10:00 – 每個人開始個別報告自己的狀況
+11:15 – 講論文撰寫的格式，每個地方要放哪裡，像是introduction 與 system architecture
+
+
+0731
+@Richard 徐銘亨 
+It's what we are talking about. We want to investigate the impact of scheduler on the RU's power concumption.
+https://www.linkedin.com/posts/nitingupta639_how-do-100-users-share-one-5g-cell-a-5g-share-7482988661622353920-e1RF/?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAABYuNL8ByU_Hh5yE-6IexZ7JND2ft5F3DNA
+
+
+
+
+

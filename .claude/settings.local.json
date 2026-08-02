@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -NoProfile -Command \"Get-ChildItem -Force 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報\\\\2026-08-01_Daily' | Select-Object Name, Length\")",
+      "Bash(powershell -NoProfile -Command \"Test-Path 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報\\\\2026-08-01_Daily-Note.md'\")",
+      "Bash(powershell -NoProfile -Command \"Get-ChildItem -Force 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\會議記錄' -Recurse | Select-Object FullName\")",
+      "Bash(powershell -Command \"Get-ChildItem -Force 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\TEEP_David資料\\\\步驟2' -Recurse | Select-Object FullName, Length\")",
+      "Bash(PYTHONIOENCODING=utf-8 python3 -c ' *)",
+      "Bash(powershell -Command \"Get-ChildItem -Force 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報' | Select-Object Name\")",
+      "Bash(powershell -Command \"New-Item -ItemType Directory -Force -Path 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報\\\\2026-08-03_Daily' | Out-Null; Move-Item -Path 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報\\\\2026-08-02_Daily\\\\2026-08-02_Daily-Note.md' -Destination 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報\\\\2026-08-03_Daily\\\\2026-08-03_Daily-Note.md'; Remove-Item -Path 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報\\\\2026-08-02_Daily' -Force; Get-ChildItem -Force 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報\\\\2026-08-03_Daily'\")"
+    ]
+  }
+}

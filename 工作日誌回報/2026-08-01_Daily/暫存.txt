@@ -1,0 +1,117 @@
+1、學會如何在不同的 Terminal 中呼叫 Claude code
+   -> 先確定好路徑
+   -> 直接輸入 claude
+   -> 用方向件控制，ctrl + x 來刪除掉不必要的對話紀錄
+   -> 用 /compact 、 /model 來記錄與改變模型
+   -> 改變 claude 生成，選擇在筆記本中編輯
+
+2、Claude code 因為中文輸入的問題
+   -> 可改輸出的 JSON 檔，但這裡不處理
+   -> 選用黑圖示的 命令提示字元 呼叫 claude code，來取代原本藍圖示的 PowerShell
+   -> 需用系統管理員的身分信行
+
+3、Ubuntu 的操作
+   -> Ctrl + Alt + T 開啟 Terminal
+   -> Ctrl + Shift + C 是 copy
+
+4、安裝 Ubuntu 
+   
+   1、備份資料
+      -> 僅備份重要資料，遺失會哭的那種
+      -> 原本用傳統 1T 硬碟，但需要轉接線，後面考慮雲端備份重要圖片。嘗試拆機取得傳統 1T HDD 如圖片4
+      -> 順便整理 D: 以及刪除不會再使用到的檔案
+      
+      1、備份金鑰 (有嘗試過，但最後沒有做)
+      -> https://account.microsoft.com/devices/recoverykey 登入後，會顯示要把金鑰存在隨身碟 OR 已經連接電腦的裝置，前者要插隨身碟，後者則是掃 QR code
+      -> 我先嘗試隨身碟，但因為老化的關係，導致隨身碟插入後沒辦法退出，同時還卡在讀取狀態
+      -> 強行拔除隨身碟，並確認資料無損壞
+      -> 重插 SD 卡，成功讀取隨身碟
+      -> 登入微軟，找不到金鑰，懷疑是一次性或有冷卻
+      -> 顯示金鑰未存取，確認是有開啟加密，但沒有登入帳號，所以沒有金鑰問題。如圖片1
+      -> 本身沒有登入微軟的習慣，不會有備份金鑰問題，繼續備份資料的動作
+
+   2、確定環境
+      -> Confirm-SecureBootUEFI，結果是 True
+      -> Get-BitLockerVolume，結果如圖片2
+      -> 再次確認金鑰問題 manage-bde -protectors -get C: 、manage-bde -protectors -get D:。結果如圖片3
+      -> 環境確認無誤
+      -> 分割 D: 來給 Ubuntu。結果如圖片6
+
+
+   3、開始製作 Ubuuntu 隨身碟
+      -> 設立 Rufus。如圖片7
+      -> 解決彈出問題。如圖片8
+
+
+   4、確認 Ubuntu 安裝位置。如圖片5
+      -> Ubuntu 下只能用 claude 網頁版。claude 桌面版是 .exe，無法執行
+
+   5、依照指示安裝
+      -> 點太快，沒有圖片佐證選了甚麼設定，代表過程順利沒問題
+      -> 後續可用 Ubuntu Terminal 確定環境
+
+   5、確保雙系統能自由切換。如圖片9
+
+
+5、處理 Ubuntu 的時間問題
+
+   1、在 Ubuntu 的 Terminal 中輸入 sudo timedatectl set-ntp true 、 sudo systemctl restart systemd-timesyncd 、timedatectl
+      
+   2、得到結果是目前時間
+           Local time: Sat 2026-08-01 02:52:21 CST
+           Universal time: Fri 2026-07-31 18:52:21 UTC
+           RTC time: Sat 2026-08-01 02:52:14
+           Time zone: Asia/Taipei (CST, +0800)
+
+  3、手動修時間，輸入 sudo date -s "2026-08-01 HH:MM:SS"
+
+  4、重新登入 Ubuntu。螢幕中間上方會有目前時間
+
+6、處理 Ubuntu 下中文輸入問題(最後沒處理)
+
+   1、確認好時間正確，然後才能安裝中文輸入。輸入 sudo apt update && sudo apt install -y ibus-chewing
+
+   2、Ubuntu 介面，右上角選擇新增輸入法
+
+   3、無法透過 Ctrl + Space 切換、無法打逗號
+
+   4、放棄，就用英文輸入即可
+
+7、RAPL 驗證
+
+-> Ubuntu Terminal 中輸入 ls /sys/class/powercap/，得到 intel-rapl  intel-rapl-mmio  intel-rapl-mmio:0  intel-rapl:0  intel-rapl:0:0  intel-rapl:0:1  intel-rapl:1
+
+-> 再測試 sudo cat /sys/class/powercap/intel-rapl:0/energy_uj，得到 8950256567
+
+
+8、Track A 的軟體安裝
+
+   1、iperf3 彈窗，問是否要在背景執行，選 no。如圖片10
+
+   2、pip3 install pandas matplotlib seaborn --break-system-packages，Ubuntu 26 版本的關係，要額外安裝這個
+
+   3、消除 path warning 的問題，輸入 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc、source ~/.bashrc
+
+   4、安裝 Docker sudo apt install -y docker.io 、 sudo usermod -aG docker $USER
+
+   5、確認 docker 版本，docker --version，得到 Docker version 29.1.3, build 29.1.3-0ubuntu4.1
+
+   6、重新啟動並進入 Ubuntu
+
+9、繼續跑 Scaphandre
+
+   1、執行這些
+       docker run -d --name scaphandre --privileged \
+       -v /sys/class/powercap:/sys/class/powercap \
+       -p 8080:8080 \
+       hubblo/scaphandre prometheus
+
+   2、再執行 sudo apt install -y curl 、 curl localhost:8080/metrics | grep scaph_host_power
+   -> 此時應有數據回傳，但沒有 scaph_host_power
+
+   3、執行 curl localhost:8080/metrics | head -50，得到正確結果。如圖片11
+
+10、安裝完 Ubuntu 後 PowerShell 寬度判斷失效 (未解決)
+   -> 改用全英文 (推荐但不實際)
+   -> 調整 PowerShell JSON 檔 (可用但麻煩)
+   -> 不用藍圖示的 PowerShell，改用 cmd (解決問題)

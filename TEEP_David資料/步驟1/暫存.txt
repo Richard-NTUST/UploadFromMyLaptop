@@ -1,0 +1,77 @@
+19:46 Richard 徐銘亨 Hi David,
+
+I searched your GitHub using the keyword "RU power", and I found quite a few related projects. I think those contain a lot of the background knowledge that I can start learning on my own.
+
+I have a few questions I'd like to ask:
+19:46 Richard 徐銘亨 1. Were these projects mainly your own ideas, or were they decided after discussions with Professor Ray? Is there an overall system architecture or roadmap for getting start?
+
+2. My current plan is to reproduce the existing results first, and then learn the background knowledge afterward, just like I'm doing with Tobby's experiments. Would you recommend this approach?
+
+3. Since my future topic will be power consumption of the RU and its relationship with different scheduling algorithms, which is similar to your part of research, do you have any existing work or results that I could try to reproduce?
+
+I also noticed three of your daily reports:
+
+* (Link 1。https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-05-01_NVIDIA-cuMAC-GPU-Accelerated-Scheduling.md) 
+
+* (Link 2。https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-03-02_Frequencies-in-NR.md)
+
+* (Link 3。https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-02-03_srsRAN-Scheduler-Deep-Dive.md#scheduler-architecture-hierarchy)
+
+I think these would help me get up to speed quickly. Besides those, are there any papers, documents, or other materials that you would recommend I read first?
+
+Thanks! I plan to mainly learn by myself with AI, I just want to make sure I'm studying in the right direction without taking too much of your time.
+19:55 David P Hi Richard, I'll try to answer these tonight !
+2026.07.28 星期二
+05:41 Richard 徐銘亨 Good morning, David!
+
+I spent some time looking through the materials yesterday. From what I understand, my short-term goal is to compare the RU's power consumption under time-domain scheduling (where the PRBs are evenly distributed across time slots) and frequency-domain scheduling (where the PRBs fully occupy the frequency axis).
+
+So I decided to start with Study Notes #2 first, since it seems to cover the fundamental concepts. Study Notes #1 and #3 look more focused on scheduling applications, so I think it makes more sense to read those after I have a solid understanding of the basics.
+
+Does that sound like a reasonable learning order to you?
+
+11:19 David P 1. Were these projects mainly your own ideas, or were they decided after discussions with Professor Ray? Is there an overall system architecture or roadmap for getting start?
+-> I was given a list of topics by Prof. Ray at the start of my internship probation, and I picked this one from there (due to it being very close to the classic O-RAN materials that BMW deal with)
+
+2. My current plan is to reproduce the existing results first, and then learn the background knowledge afterward, just like I'm doing with Tobby's experiments. Would you recommend this approach?
+-> Sure, please note that my early experiments were mostly just: setup Scaphandre for reading laptop power measurements (directly on Ubuntu), then triggering IPerf to another port in order to simulate traffic (+ some plotting). For the proper flow, we might have to meet and sync first...
+
+3. Since my future topic will be power consumption of the RU and its relationship with different scheduling algorithms, which is similar to your part of research, do you have any existing work or results that I could try to reproduce?
+As for results, most of the real results I have were made this and late last month, so maybe I'll give you the main learning resources Prof. gave instead...
+
+-> The main resources that Prof. Ray gave me were
+- https://github.com/ontherays/ocloud-telemetry-agent/blob/main/finding.md
+- Liu's master paper (I'll send it to you)
+- Energy efficiency improvements through micro sites in cellular mobile radio
+https://ieeexplore.ieee.org/document/5360741
+
+- How much energy is needed to run a wireless network?,
+https://ieeexplore.ieee.org/document/6056691
+
+- https://ieeexplore.ieee.org/document/6600717
+- https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7438738
+
+- Here are some information from NVIDIA Aerial MAC FYI. You can use it as a reference for Scheduler.
+Algorithms:
+https://docs.nvidia.com/aerial/cuda-accelerated-ran/latest/cubb/cumac/implementation.html
+MAC Scheduler:
+https://docs.nvidia.com/aerial/cuda-accelerated-ran/latest/cubb/cumac/cumac-cp/index.html
+(NOTE: These are NVIDIA's model, which other than being close-source, is foundationally incompatible with OAI's approach, so it's not as important as the others)
+
+I also noticed three of your daily reports:
+
+* (Link 1。https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-05-01_NVIDIA-cuMAC-GPU-Accelerated-Scheduling.md) 
+
+* (Link 2。https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-03-02_Frequencies-in-NR.md)
+
+* (Link 3。https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-02-03_srsRAN-Scheduler-Deep-Dive.md#scheduler-architecture-hierarchy)
+
+-> Note that these are very theoretical (and mostly unused yet, for me atleast), I think from my side, it'd be better to just read the study notes I uploaded around late June - July and checking out OAI code directly if you have access hahaha.
+
+I think these would help me get up to speed quickly. Besides those, are there any papers, documents, or other materials that you would recommend I read first?
+-> Other than the ones I listed at point 3, not really
+
+Thanks! I plan to mainly learn by myself with AI, I just want to make sure I'm studying in the right direction without taking too much of your time.
+11:19 David P Liu
+11:19 David P Hey Richard, here's the answers to last night, sorry I forgot to send it over to you 😅
+11:20 David P Yes, it's a good order

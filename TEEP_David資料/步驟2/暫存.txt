@@ -1,0 +1,485 @@
+(All comments are carry out in Ubuntu system)
+
+1. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~$ whoami
+
+moxi
+
+
+
+
+
+2. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~$ docker start scaphandre
+
+scaphandre
+
+
+
+
+
+
+3. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~$ docker ps
+
+CONTAINER ID   IMAGE               COMMAND                  CREATED        STATUS         PORTS                                         NAMES
+669baa97d7d5   hubblo/scaphandre   "/usr/local/bin/scap…"   33 hours ago   Up 3 minutes   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp   scaphandre
+
+
+
+
+
+4.moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~$ curl -s localhost:8080/metrics | grep scaph_domain_power_microwatts
+
+# HELP scaph_domain_power_microwatts Power measurement relative to a RAPL Domain, in microwatts
+# TYPE scaph_domain_power_microwatts gauge
+scaph_domain_power_microwatts{domain_name="uncore",domain_id="1",socket_id="0"} 86797
+scaph_domain_power_microwatts{domain_name="core",domain_id="0",socket_id="0"} 528811
+
+
+
+(restart from here)
+
+5. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~$ cd ~
+git clone https://github.com/bmw-ntust-internship/internship.git
+cd internship
+git checkout 2026-TEEP-2-JDavid
+
+Cloning into 'internship'...
+Username for 'https://github.com': 
+
+
+(After login and successfully clone David's git)
+
+
+6. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~/internship$ git branch
+
+* 2026-TEEP-2-JDavid
+  master
+
+
+
+
+7. Step3
+
+   a. create the revised file
+   
+   b. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~/internship$ chmod +x ~/internship/scripts/run_week4_gap_run.sh
+
+   c. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~/internship$ head -5 ~/internship/scripts/run_week4_gap_run.sh
+   
+         #!/bin/bash
+         set -euo pipefail
+         TARGET_HOST="${TARGET_HOST:-192.168.1.15}"
+
+
+(Due to restart Ubuntu system, open Scaphandre container again is necessary)
+
+(Reopen Scaphandre container as Step1...)
+
+
+8. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~/internship$ docker start scaphandre
+   
+   scaphandre
+
+
+9. curl -s localhost:8080/metrics | grep scaph_domain_power_microwatts
+
+   # HELP scaph_domain_power_microwatts Power measurement relative to a RAPL Domain, in microwatts
+   TYPE scaph_domain_power_microwatts gauge
+   scaph_domain_power_microwatts{socket_id="0",domain_id="1",domain_name="uncore"} 91221
+   caph_domain_power_microwatts{domain_name="core",domain_id="0",socket_id="0"} 683632
+   
+   
+10. Step5.
+
+   a. open terminal_2,  
+      moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~$ iperf3 -s
+
+      -----------------------------------------------------------
+      Server listening on 5201 (test #1)
+      -----------------------------------------------------------
+
+   b. open terminal_3, 
+      moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~$ cd ~/internship
+      TARGET_HOST=localhost \
+      MODE=udp \
+      OUTPUT_DIR=runs/2026-08-03/sweep-01 \
+      ./scripts/run_week4_gap_run.sh
+      
+      Run folder: runs/2026-08-03/sweep-01
+      Target host: localhost:5201
+      Mode: udp
+      Targets: L= M= H=
+      Timing: DURATION=180 IDLE=60 ROUNDS=3
+      Checking Scaphandre exporter: http://localhost:8080/metrics
+      
+      ---> get stuck. open terminal_4 to check
+      
+      a. open terminal terminal_4,
+         moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~$ ps aux | grep run_week4
+         
+         moxi        8762  0.0  0.0   9316  2576 pts/3    S+   00:23   0:00 grep --color=auto run_week4
+      
+      
+      b. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~$ curl -s localhost:8080/metrics | grep scaph_domain_power_microwatts
+      
+         # HELP scaph_domain_power_microwatts Power measurement relative to a RAPL Domain, in microwatts
+         # TYPE scaph_domain_power_microwatts gauge
+         scaph_domain_power_microwatts{domain_name="uncore",domain_id="1",socket_id="0"} 75853
+         scaph_domain_power_microwatts{domain_name="core",domain_id="0",socket_id="0"} 861916
+
+
+      c. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~$ curl -v -s localhost:8080/metrics 2>&1 | head -20
+	* Host localhost:8080 was resolved.
+	* IPv6: ::1
+	* IPv4: 127.0.0.1
+	*   Trying [::1]:8080...
+	* Established connection to localhost (::1 port 8080) from ::1 port 46928 
+	* using HTTP/1.x
+	> GET /metrics HTTP/1.1
+	> Host: localhost:8080
+	> User-Agent: curl/8.18.0
+	> Accept: */*
+	> 
+	* Request completely sent off
+	< HTTP/1.1 200 OK
+	< content-length: 8208
+	< date: Sun, 02 Aug 2026 16:26:35 GMT
+	< 
+	{ [8208 bytes data]
+	# HELP scaph_process_disk_write_bytes Data written on disk by the process, in bytes
+	# TYPE scaph_process_disk_write_bytes gauge
+	scaph_process_disk_write_bytes{exe="/usr/local/bin/scaphandre",cmdline="/usr/local/bin/scaphandreprometheus",pid="1"} 0
+
+
+   c. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~/internship$ cd ~/internship
+      TARGET_HOST=localhost \
+      MODE=udp \
+      OUTPUT_DIR=runs/2026-08-03/sweep-01 \
+      bash -x ./scripts/run_week4_gap_run.sh 2>&1 | head -50
+
+        + set -euo pipefail
+	+ TARGET_HOST=localhost
+	+ IPERF_PORT=5201
+	+ MODE=udp
+	+ TARGET_L=
+	+ TARGET_M=
+	+ TARGET_H=
+	+ DURATION=180
+	+ IDLE=60
+	+ ROUNDS=3
+	+ SCAPHANDRE_URL=http://localhost:8080/metrics
+	+ POWER_SAMPLE_PERIOD_SEC=10
+	++ date -u +%Y-%m-%d
+	+ DEFAULT_DATE_UTC=2026-08-02
+	++ date -u +%H%M%S
+	+ DEFAULT_TIME_UTC=162850
+	+ OUTPUT_DIR=runs/2026-08-03/sweep-01
+	+ require_cmd bash
+	+ command -v bash
+	+ require_cmd curl
+	+ command -v curl
+	+ require_cmd awk
+	+ command -v awk
+	+ require_cmd iperf3
+	+ command -v iperf3
+	+ require_cmd date
+	+ command -v date
+	+ require_cmd mkdir
+	+ command -v mkdir
+	+ require_cmd tee
+	+ command -v tee
+	+ mkdir -p runs/2026-08-03/sweep-01
+	+ echo 'Run folder: runs/2026-08-03/sweep-01'
+	Run folder: runs/2026-08-03/sweep-01
+	+ echo 'Target host: localhost:5201'
+	Target host: localhost:5201
+	+ echo 'Mode: udp'
+	Mode: udp
+	+ echo 'Targets: L= M= H='
+	Targets: L= M= H=
+	+ echo 'Timing: DURATION=180 IDLE=60 ROUNDS=3'
+	Timing: DURATION=180 IDLE=60 ROUNDS=3
+	+ echo 'Checking Scaphandre exporter: http://localhost:8080/metrics'
+	Checking Scaphandre exporter: http://localhost:8080/metrics
+	+ check_http_ok http://localhost:8080/metrics
+	+ local url=http://localhost:8080/metrics
+	+ curl -fsS http://localhost:8080/metrics
+	+ set_default_targets_from_speed
+	+ [[ -n '' ]]
+	+ local iface speed_mbps
+
+   d. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~/internship$ cd ~/internship
+      TARGET_HOST=localhost \
+      MODE=udp \
+      OUTPUT_DIR=runs/2026-08-03/sweep-01 \
+      bash -x ./scripts/run_week4_gap_run.sh 2>&1 | head -100
+      
+	+ set -euo pipefail
+	+ TARGET_HOST=localhost
+	+ IPERF_PORT=5201
+	+ MODE=udp
+	+ TARGET_L=
+	+ TARGET_M=
+	+ TARGET_H=
+	+ DURATION=180
+	+ IDLE=60
+	+ ROUNDS=3
+	+ SCAPHANDRE_URL=http://localhost:8080/metrics
+	+ POWER_SAMPLE_PERIOD_SEC=10
+	++ date -u +%Y-%m-%d
+	+ DEFAULT_DATE_UTC=2026-08-02
+	++ date -u +%H%M%S
+	+ DEFAULT_TIME_UTC=163059
+	+ OUTPUT_DIR=runs/2026-08-03/sweep-01
+	+ require_cmd bash
+	+ command -v bash
+	+ require_cmd curl
+	+ command -v curl
+	+ require_cmd awk
+	+ command -v awk
+	+ require_cmd iperf3
+	+ command -v iperf3
+	+ require_cmd date
+	+ command -v date
+	+ require_cmd mkdir
+	+ command -v mkdir
+	+ require_cmd tee
+	+ command -v tee
+	+ mkdir -p runs/2026-08-03/sweep-01
+	+ echo 'Run folder: runs/2026-08-03/sweep-01'
+	Run folder: runs/2026-08-03/sweep-01
+	+ echo 'Target host: localhost:5201'
+	Target host: localhost:5201
+	+ echo 'Mode: udp'
+	Mode: udp
+	+ echo 'Targets: L= M= H='
+	Targets: L= M= H=
+	+ echo 'Timing: DURATION=180 IDLE=60 ROUNDS=3'
+	Timing: DURATION=180 IDLE=60 ROUNDS=3
+	+ echo 'Checking Scaphandre exporter: http://localhost:8080/metrics'
+	Checking Scaphandre exporter: http://localhost:8080/metrics
+	+ check_http_ok http://localhost:8080/metrics
+	+ local url=http://localhost:8080/metrics
+	+ curl -fsS http://localhost:8080/metrics
+	+ set_default_targets_from_speed
+	+ [[ -n '' ]]
+	+ local iface speed_mbps
+	++ resolve_route_iface localhost
+	++ local host=localhost
+	++ ip route get localhost
+	++ awk '{for (i=1;i<=NF;i++) if ($i=="dev") {print $(i+1); exit}}'
+	+ iface=
+
+
+      ( ip route get localhost fail, try to bypass the automatically detection )
+      
+   e. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~/internship$ cd ~/internship
+      TARGET_HOST=localhost \
+      MODE=udp \
+      TARGET_L=200M \
+      TARGET_M=500M \
+      TARGET_H=900M \
+      OUTPUT_DIR=runs/2026-08-03/sweep-01 \
+      ./scripts/run_week4_gap_run.sh
+      
+	Run folder: runs/2026-08-03/sweep-01
+	Target host: localhost:5201
+	Mode: udp
+	Targets: L=200M M=500M H=900M
+	Timing: DURATION=180 IDLE=60 ROUNDS=3
+	Checking Scaphandre exporter: http://localhost:8080/metrics
+	Checking iperf3 connectivity (quick handshake)...
+	Starting power capture -> runs/2026-08-03/sweep-01/power_uw.txt
+	Starting sweep -> runs/2026-08-03/sweep-01/markers.csv
+	Starting Week 3 Load Sweep Experiment...
+	Markers will be saved to runs/2026-08-03/sweep-01/markers.csv
+	Mode: udp
+	Target host: localhost:5201
+	Initial Idle (60 s)...
+	[2026-08-02T16:34:25Z] MARKER: Start_Initial_Idle
+	[2026-08-02T16:35:25Z] MARKER: Stop_Initial_Idle
+	=== Round 1 of 3 ===
+	Starting Load_L_Run1 (Target: 200M)...
+	[2026-08-02T16:35:25Z] MARKER: Start_Load_L_Run1
+	^Z
+	[1]+  Stopped                    TARGET_HOST=localhost MODE=udp TARGET_L=200M TARGET_M=500M TARGET_H=900M OUTPUT_DIR=runs/2026-08-03/sweep-01 ./scripts/run_week4_gap_run.sh
+
+
+     ( Due to inadvertently stop for pressing Ctrl + C instead of  Ctrl + shift +C in the terminal, run it again)
+     
+     a. check terminal_2 still listening (as picture_1. It still listening and also retain some evidence that in last try)
+     
+     b. In terminal_3,
+     moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~/internship$ cd ~/internship
+     TARGET_HOST=localhost \
+     MODE=udp \
+     TARGET_L=200M \
+     TARGET_M=500M \
+     TARGET_H=900M \
+     OUTPUT_DIR=runs/2026-08-03/sweep-02 \
+     ./scripts/run_week4_gap_run.sh
+     
+	Run folder: runs/2026-08-03/sweep-02
+	Target host: localhost:5201
+	Mode: udp
+	Targets: L=200M M=500M H=900M
+	Timing: DURATION=180 IDLE=60 ROUNDS=3
+	Checking Scaphandre exporter: http://localhost:8080/metrics
+	Checking iperf3 connectivity (quick handshake)...
+	Starting power capture -> runs/2026-08-03/sweep-02/power_uw.txt
+	Starting sweep -> runs/2026-08-03/sweep-02/markers.csv
+	Starting Week 3 Load Sweep Experiment...
+	Markers will be saved to runs/2026-08-03/sweep-02/markers.csv
+	Mode: udp
+	Target host: localhost:5201
+	Initial Idle (60 s)...
+	[2026-08-02T16:44:42Z] MARKER: Start_Initial_Idle
+	[2026-08-02T16:45:42Z] MARKER: Stop_Initial_Idle
+	=== Round 1 of 3 ===
+	Starting Load_L_Run1 (Target: 200M)...
+	[2026-08-02T16:45:42Z] MARKER: Start_Load_L_Run1
+	Finished Load_L_Run1
+	[2026-08-02T16:48:42Z] MARKER: Stop_Load_L_Run1
+	Cool-down (60 s)...
+	Starting Load_M_Run1 (Target: 500M)...
+	[2026-08-02T16:49:42Z] MARKER: Start_Load_M_Run1
+	Finished Load_M_Run1
+	[2026-08-02T16:52:42Z] MARKER: Stop_Load_M_Run1
+	Cool-down (60 s)...
+	Starting Load_H_Run1 (Target: 900M)...
+	[2026-08-02T16:53:42Z] MARKER: Start_Load_H_Run1
+	Finished Load_H_Run1
+	[2026-08-02T16:56:42Z] MARKER: Stop_Load_H_Run1
+	Cool-down (60 s)...
+	=== Round 2 of 3 ===
+	Starting Load_L_Run2 (Target: 200M)...
+	[2026-08-02T16:57:42Z] MARKER: Start_Load_L_Run2
+	Finished Load_L_Run2
+	[2026-08-02T17:00:42Z] MARKER: Stop_Load_L_Run2
+	Cool-down (60 s)...
+	Starting Load_M_Run2 (Target: 500M)...
+	[2026-08-02T17:01:42Z] MARKER: Start_Load_M_Run2
+	Finished Load_M_Run2
+	[2026-08-02T17:04:42Z] MARKER: Stop_Load_M_Run2
+	Cool-down (60 s)...
+	Starting Load_H_Run2 (Target: 900M)...
+	[2026-08-02T17:05:42Z] MARKER: Start_Load_H_Run2
+	Finished Load_H_Run2
+	[2026-08-02T17:08:42Z] MARKER: Stop_Load_H_Run2
+	Cool-down (60 s)...
+	=== Round 3 of 3 ===
+	Starting Load_L_Run3 (Target: 200M)...
+	[2026-08-02T17:09:42Z] MARKER: Start_Load_L_Run3
+	Finished Load_L_Run3
+	[2026-08-02T17:12:42Z] MARKER: Stop_Load_L_Run3
+	Cool-down (60 s)...
+	Starting Load_M_Run3 (Target: 500M)...
+	[2026-08-02T17:13:42Z] MARKER: Start_Load_M_Run3
+	Finished Load_M_Run3
+	[2026-08-02T17:16:42Z] MARKER: Stop_Load_M_Run3
+	Cool-down (60 s)...
+	Starting Load_H_Run3 (Target: 900M)...
+	[2026-08-02T17:17:42Z] MARKER: Start_Load_H_Run3
+	Finished Load_H_Run3
+	[2026-08-02T17:20:42Z] MARKER: Stop_Load_H_Run3
+	Cool-down (60 s)...
+	Experiment Complete.
+	Done. Captured inputs for Week 4 notebook in: runs/2026-08-03/sweep-02
+	Stopping power capture (pid=9960)
+
+
+
+11. Step6
+    cd ~/internship
+    python3 scripts/analyze_week3_data.py runs/2026-08-03/sweep-02
+	    
+	Loading data...
+	Building explicit intervals from markers...
+	Labelling power samples using trimmed scoring windows...
+	Generating plots...
+	Saved timeline plot to assets/2026-08-03/plots/power_timeline.png
+	/home/moxi/internship/scripts/analyze_week3_data.py:385: FutureWarning: 
+
+	Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+	  sns.boxplot(data=df, x="state", y="power_w", order=order, palette="viridis")
+	/home/moxi/internship/scripts/analyze_week3_data.py:388: UserWarning: 
+
+	The `join` parameter is deprecated and will be removed in v0.15.0. You can remove the line between points with `linestyle='none'`.
+
+	  sns.pointplot(data=df, x="state", y="power_w", order=order, estimator="mean", color="red", join=False, label="Mean")
+	Saved linearity plot to assets/2026-08-03/plots/power_linearity_boxplot.png
+
+	=== Experiment Statistics (TRIMMED windows) ===
+		    mean       std       min        max  count      cv_pct
+	state                                                             
+	Idle    0.248397  0.518102  0.077274   3.224231     36  208.578154
+	Load-L  0.989501  1.083298  0.726211   8.031920     48  109.479267
+	Load-M  0.729448  0.080285  0.611790   0.878035     48   11.006320
+	Load-H  1.189417  1.560984  0.704693  10.078302     47  131.239441
+	Saved stats to assets/2026-08-03/plots/stats_summary.md
+	Saved per-run repeatability to assets/2026-08-03/plots/repeatability_per_run.md
+	Summarizing iperf server log...
+	Note: No iperf log found at runs/2026-08-03/sweep-02/iperf.txt. Skipping iperf summary.
+	Summarizing iperf client logs...
+	Saved iperf client summary to runs/2026-08-03/sweep-02/iperf_client_summary.md
+	Done.
+
+     
+     
+
+   
+(The results are wired, too low. Start to debug)
+
+
+
+12. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~/internship$ cat ~/internship/runs/2026-08-03/sweep-02/power_uw.txt | head -20
+
+	2026-08-02T16:44:42Z 783029
+	2026-08-02T16:44:52Z 3224231
+	2026-08-02T16:45:02Z 118148
+	2026-08-02T16:45:12Z 154221
+	2026-08-02T16:45:22Z 142119
+	2026-08-02T16:45:32Z 121264
+	2026-08-02T16:45:42Z 321118
+	2026-08-02T16:45:52Z 865948
+	2026-08-02T16:46:03Z 746262
+	2026-08-02T16:46:13Z 792140
+	2026-08-02T16:46:23Z 768440
+	2026-08-02T16:46:33Z 741334
+	2026-08-02T16:46:43Z 760592
+	2026-08-02T16:46:53Z 863602
+	2026-08-02T16:47:03Z 873312
+	2026-08-02T16:47:13Z 926866
+	2026-08-02T16:47:23Z 814543
+	2026-08-02T16:47:33Z 795831
+	2026-08-02T16:47:43Z 1166463
+	2026-08-02T16:47:53Z 894187
+
+
+13. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~/internship$ head -8 ~/internship/runs/2026-08-03/sweep-02/power_uw.txt
+
+	2026-08-02T16:44:42Z 783029
+	2026-08-02T16:44:52Z 3224231
+	2026-08-02T16:45:02Z 118148
+	2026-08-02T16:45:12Z 154221
+	2026-08-02T16:45:22Z 142119
+	2026-08-02T16:45:32Z 121264
+	2026-08-02T16:45:42Z 321118
+	2026-08-02T16:45:52Z 865948
+
+14. moxi@moxi-ASUS-TUF-Gaming-F15-FX507ZV4-FX507ZV4:~/internship$ grep -A5 "2026-08-02T16:53" ~/internship/runs/2026-08-03/sweep-02/power_uw.txt | head -20
+
+	2026-08-02T16:53:05Z 89712
+	2026-08-02T16:53:16Z 158688
+	2026-08-02T16:53:26Z 136202
+	2026-08-02T16:53:36Z 109332
+	2026-08-02T16:53:46Z 386922
+	2026-08-02T16:53:56Z 932078
+	2026-08-02T16:54:06Z 5702877
+	2026-08-02T16:54:16Z 10078302
+	2026-08-02T16:54:26Z 1004595
+	2026-08-02T16:54:36Z 737900
+	2026-08-02T16:54:46Z 759208
+
+
+( Terminal_2, listening the result, is in picture_2 )
