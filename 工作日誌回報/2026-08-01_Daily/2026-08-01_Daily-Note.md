@@ -1,6 +1,6 @@
 ﻿# Daily Note
 
-> 依據 Open-Research-Playbook `templates/G-daily-note.md` 格式記錄。
+> 依據 Open-Research-Playbook [templates/G-daily-note.md](../Open-Research-Playbook/templates/G-daily-note.md) 格式記錄。
 
 ---
 
@@ -12,7 +12,7 @@
 
 ### Short-term Goal
 
-* **Goal 1：** 完成 Track A（軟體代理功耗量測）重現實驗的環境建置，作為 `plan_建議.txt` 步驟 2（Track A 重現）的前置條件。
+* **Goal 1：** 完成 Track A（軟體代理功耗量測）重現實驗的環境建置，作為 [plan_建議.txt](../../plan_建議.txt) 步驟 2（Track A 重現）的前置條件。
 
   * Milestone 1：Ubuntu 雙系統安裝於 D: 硬碟（Disk 1），C: 系統碟（Disk 0）完全未動 — Due 2026/08/01 — **已完成**
   * Milestone 2：RAPL（Intel Running Average Power Limit）可讀性驗證通過 — Due 2026/08/01 — **已完成**
@@ -50,7 +50,7 @@
 
 |Task|Reason|Required Action or Support|
 |-|-|-|
-|補齊 `會議記錄\2026-07-30_meeting\2026-07-30_Meeting-Notes.md` 底部 Where 區塊的 Related Documents / Related Templates 連結|目前 `工作日誌回報\Open-Research-Playbook`（template_cloned）等相關檔案都還在本機、尚未上傳 Git，指向本機相對路徑的連結沒有意義，故先留空。**優先度低**——單純是連結/流程完整性問題，不影響會議紀錄本身的內容產出|待 Richard 把 `工作日誌回報` 資料夾（含 Open-Research-Playbook clone）整理並上傳到 Git 後，回頭補上正確連結。Richard 預計在下次教授檢查前完成，無明確 due date，不急|
+|補齊 [2026-07-30_Meeting-Notes.md](../../會議記錄/2026-07-30_meeting/2026-07-30_Meeting-Notes.md) 底部 Where 區塊的 Related Documents / Related Templates 連結|目前 [工作日誌回報/Open-Research-Playbook](../Open-Research-Playbook)（template_cloned）等相關檔案都還在本機、尚未上傳 Git，指向本機相對路徑的連結沒有意義，故先留空。**優先度低**——單純是連結/流程完整性問題，不影響會議紀錄本身的內容產出|待 Richard 把 `工作日誌回報` 資料夾（含 Open-Research-Playbook clone）整理並上傳到 Git 後，回頭補上正確連結。Richard 預計在下次教授檢查前完成，無明確 due date，不急|
 
 已知落差（非 blocker，記錄供步驟 2 使用）：此版本 Scaphandre 沒有 `scaph_host_power_microwatts` 這個 metric（改為逐 domain 回報，`grep scaph_host_power` 查無結果），步驟 2 寫分析腳本時要改用 `scaph_domain_power_microwatts` 加總，不要照搬原 guide 的 metric 名稱。
 
@@ -103,7 +103,7 @@ None — 前次要求的「補上證據超連結」已於本次修訂完成。
 
 ## Recommendations for the Next Working Day Plan
 
-沿用已排定的步驟 2 三項任務（讀 Methodology/SOP → 執行重現腳本 → QC gate），這些皆有 `plan_建議.txt` 步驟 2 段落支持，暫無需新增建議。
+沿用已排定的步驟 2 三項任務（讀 Methodology/SOP → 執行重現腳本 → QC gate），這些皆有 [plan_建議.txt](../../plan_建議.txt) 步驟 2 段落支持，暫無需新增建議。
 
 ## Questions for the Researcher
 
@@ -122,9 +122,9 @@ None required — 若之後每篇日誌都比照這次的「資料夾 + 超連�
 
 |Priority|Task|Related Milestone or Action Item|Expected Deliverable|
 |-|-|-|-|
-|P1|讀 `docs/FinalReport/01_Methodology_Reproducible_Measurement.md` 與 `03_Standard_Operating_Procedure.md`|`plan_建議.txt` 步驟 2|理解場景矩陣（Idle → Load-L/M/H × 3 repeats）與執行 SOP，含 troubleshooting table|
-|P2|依序啟動 Scaphandre → `iperf3 -s` → 執行 `scripts/run_week4_gap_run.sh` 跑完整 Idle→Load→Idle 序列|`plan_建議.txt` 步驟 2|產出 `markers.csv` + `power_uw.txt`（注意套用 `scaph_domain_power_microwatts` 取代 guide 原文 metric 名）|
-|P3|執行 `python scripts/analyze_week3_data.py` 產圖，並對照參考圖 `assets/2026-01-28/plots/gap_analysis_sensitivity.png` 做 QC gate|`plan_建議.txt` 步驟 2|時序圖、線性度箱型圖、統計摘要；QC 判準：Idle <10W、Load >20W、平台段平坦、markers.csv 每個事件皆有 Start/Stop|
+|P1|讀 `docs/FinalReport/01_Methodology_Reproducible_Measurement.md` 與 `03_Standard_Operating_Procedure.md`|[plan_建議.txt](../../plan_建議.txt) 步驟 2|理解場景矩陣（Idle → Load-L/M/H × 3 repeats）與執行 SOP，含 troubleshooting table|
+|P2|依序啟動 Scaphandre → `iperf3 -s` → 執行 `scripts/run_week4_gap_run.sh` 跑完整 Idle→Load→Idle 序列|[plan_建議.txt](../../plan_建議.txt) 步驟 2|產出 `markers.csv` + `power_uw.txt`（注意套用 `scaph_domain_power_microwatts` 取代 guide 原文 metric 名）|
+|P3|執行 `python scripts/analyze_week3_data.py` 產圖，並對照參考圖 `assets/2026-01-28/plots/gap_analysis_sensitivity.png` 做 QC gate|[plan_建議.txt](../../plan_建議.txt) 步驟 2|時序圖、線性度箱型圖、統計摘要；QC 判準：Idle <10W、Load >20W、平台段平坦、markers.csv 每個事件皆有 Start/Stop|
 
 ---
 
@@ -140,3 +140,4 @@ None required — 若之後每篇日誌都比照這次的「資料夾 + 超連�
 * [Meeting Notes](../Open-Research-Playbook/templates/F-meeting-notes.md)
 * [AI Daily Self-review Prompt](../Open-Research-Playbook/templates/E-ai-daily-self-review-prompt.md)
 
+喵
