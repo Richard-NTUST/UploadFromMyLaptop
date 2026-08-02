@@ -196,6 +196,6 @@ python3 scripts/analyze_week3_data.py runs/2026-08-02/sweep-01
 
 ### 6.4 後續決定（2026-08-03）
 
-- **這個階段不追查/修正這個數據落差。** 對照 `claude_plan_建議.txt`，步驟 2 本身在整體計畫的優先度不算最高，更重要的是銜接步驟 6（Track B，跟上 David 現在實際在做的事）；改善量測精度（例如改讀累積能量計數器 `scaph_socket_rapl_mmio_energy_microjoules`、自行算 Δenergy/Δtime）列為**無時間壓力的 pending 項目**，有餘力可以做（也可能之後拿來跟 David 的方法比較），不做也不影響主線進度。
+- **這個階段不追查/修正這個數據落差。** 對照 `plan_建議.txt`，步驟 2 本身在整體計畫的優先度不算最高，更重要的是銜接步驟 6（Track B，跟上 David 現在實際在做的事）；改善量測精度（例如改讀累積能量計數器 `scaph_socket_rapl_mmio_energy_microjoules`、自行算 Δenergy/Δtime）列為**無時間壓力的 pending 項目**，有餘力可以做（也可能之後拿來跟 David 的方法比較），不做也不影響主線進度。
 - **打算主動找 David 討論**：問他當初的 Track A 數據是怎麼避開這種雜訊問題的（例如是否等穩定後才取樣、或用連續累積再取平均），有回覆再補充回這份文件或 `C-verification-report.md`。
 - **路徑本身（repo → Scaphandre → iperf3 → sweep script → 分析腳本 → 出圖）已確認可完整重複執行**，可視為步驟 2「最短路徑重現」的目標已達成；數據量級的落差留待未來有時間、或有 David 的方法比較資訊時再處理。

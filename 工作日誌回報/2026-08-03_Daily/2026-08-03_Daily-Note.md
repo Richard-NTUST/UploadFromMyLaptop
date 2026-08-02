@@ -12,7 +12,7 @@
 
 ### Short-term Goal
 
-* **Goal 1：** 執行 `claude_plan_建議.txt` 步驟 2——重現 Track A（軟體代理功耗-流量敏感度掃描），取得「完全自己重現、有 QC 依據」的最小可行結果。
+* **Goal 1：** 執行 `plan_建議.txt` 步驟 2——重現 Track A（軟體代理功耗-流量敏感度掃描），取得「完全自己重現、有 QC 依據」的最小可行結果。
 
   * Milestone 1：把 David 的 `internship` repo（`scripts/`、`docs/FinalReport/`）clone 到 Ubuntu 環境，並套用步驟 1 已知的 metric 名稱修正 — Due 2026/08/03 — **已完成**
   * Milestone 2：依 SOP Phase A→B 執行完整 Track A 量測（Scaphandre + iperf3 + `run_week4_gap_run.sh`），產出 `markers.csv` + `power_uw.txt` — Due 2026/08/03 — **已完成**
@@ -107,8 +107,8 @@ None required — 上次的兩個問題（日期歸屬、P3 是否拆列）已�
 
 | Priority | Task | Related Milestone or Action Item | Expected Deliverable |
 |---|---|---|---|
-| P1 | 銜接／確認 TEEP David 目前 Track B 實際進度與交接事項 | `claude_plan_建議.txt` 步驟 6 | 掌握 David 尚未完成的 baseline vs. 27-PRB 排程器 A/B 對照現況，作為未來接手的具體切入點 |
-| P2 | 背景知識研讀（依步驟 4 建議順序，先從 NR 頻域基礎開始） | `claude_plan_建議.txt` 步驟 4 | 讀完至少第一份 StudyNote（`2026-03-02_Frequencies-in-NR.md`） |
+| P1 | 銜接／確認 TEEP David 目前 Track B 實際進度與交接事項 | `plan_建議.txt` 步驟 6 | 掌握 David 尚未完成的 baseline vs. 27-PRB 排程器 A/B 對照現況，作為未來接手的具體切入點 |
+| P2 | 背景知識研讀（依步驟 4 建議順序，先從 NR 頻域基礎開始） | `plan_建議.txt` 步驟 4 | 讀完至少第一份 StudyNote（`2026-03-02_Frequencies-in-NR.md`） |
 | P3 | 視時間，回頭補讀步驟 2 文獻原文，清掉本篇 Pending 項目 | 本篇 Pending Tasks | 親自讀完 `01_Methodology...` 與 `03_SOP...`，確認與執行指南內容一致 |
 
 ---
@@ -117,7 +117,7 @@ None required — 上次的兩個問題（日期歸屬、P3 是否拆列）已�
 
 ### Related Documents
 
-* [claude_plan_建議.txt](../../claude_plan_建議.txt)
+* [plan_建議.txt](../../plan_建議.txt)
 * [步驟2_TrackA重現指南.md](../../TEEP_David資料/步驟2/步驟2_TrackA重現指南.md)
 * [Research Playbook](../Open-Research-Playbook/docs/02-research-playbook.md)
 
