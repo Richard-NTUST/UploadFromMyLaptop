@@ -1,0 +1,44 @@
+services:
+  winlab-e2e-rapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: winlab-e2e-rapp
+    init: true
+    network_mode: host
+    restart: unless-stopped
+    working_dir: /home/hpe/winlab_e2e_rapp
+    env_file:
+      - .env
+    environment:
+      WINLAB_E2E_BIND_HOST: ${WINLAB_E2E_BIND_HOST:-127.0.0.1}
+      WINLAB_E2E_BIND_PORT: ${WINLAB_E2E_BIND_PORT:-19090}
+
+      # Server 1: rApp / E2E runner host.
+      WINLAB_E2E_EXEC_MODE: ${WINLAB_E2E_EXEC_MODE:-local}
+      WINLAB_E2E_RUNNER_NAME: ${WINLAB_E2E_RUNNER_NAME:-hpe}
+      WINLAB_E2E_RUNNER_HOST: ${WINLAB_E2E_RUNNER_HOST:-192.168.8.26}
+      WINLAB_E2E_SSH_TARGET: ${WINLAB_E2E_SSH_TARGET:-hpe@192.168.8.26}
+      WINLAB_E2E_HPE_PYTHON: ${WINLAB_E2E_HPE_PYTHON:-python3}
+      WINLAB_E2E_KUBECTL: ${WINLAB_E2E_KUBECTL:-/home/hpe/CRAN/kubectl}
+      WINLAB_E2E_KUBECONFIG: ${WINLAB_E2E_KUBECONFIG:-/home/hpe/CRAN/ming-kubeconfig.yaml}
+      WINLAB_E2E_NAMESPACE: ${WINLAB_E2E_NAMESPACE:-ming-ns}
+      WINLAB_E2E_CLOUD_SCRIPT: ${WINLAB_E2E_CLOUD_SCRIPT:-/home/hpe/CRAN/ocloud-helm-templates/cloud_e2e.py}
+      WINLAB_E2E_MING_LOGS: ${WINLAB_E2E_MING_LOGS:-/home/hpe/ming-logs}
+      WINLAB_E2E_ARTIFACTS: ${WINLAB_E2E_ARTIFACTS:-runs/winlab_e2e_rapp}
+      WINLAB_E2E_ARTIFACT_RUNNER: ${WINLAB_E2E_ARTIFACT_RUNNER:-/home/hpe/winlab_e2e_rapp/scripts/run_e2e_with_artifacts.py}
+      WINLAB_E2E_IPERF_BIND: ${WINLAB_E2E_IPERF_BIND:-10.45.0.1}
+
+      # Server 2: UE-control host. IAPC_PASS must be supplied in local .env.
+      OAI_UE_MODEL: ${OAI_UE_MODEL:-samsung}
+      OAI_UE_SERIAL: ${OAI_UE_SERIAL:-R5CN30TMBYR}
+      OAI_IAPC_HOST: ${OAI_IAPC_HOST:-iapc}
+      OAI_IAPC_PORT: ${OAI_IAPC_PORT:-24}
+      IAPC_PASS: ${IAPC_PASS:?set IAPC_PASS in .env}
+      OAI_UE_IPERF_JSON_PATH: ${OAI_UE_IPERF_JSON_PATH:-/data/local/tmp/iperf3_log.json}
+      OAI_MAGIC_IPERF_PACKAGE: ${OAI_MAGIC_IPERF_PACKAGE:-com.nextdoordeveloper.miperf.miperf}
+    volumes:
+      - /home/hpe/winlab_e2e_rapp:/home/hpe/winlab_e2e_rapp
+      - /home/hpe/ming-logs:/home/hpe/ming-logs
+      - /home/hpe/CRAN:/home/hpe/CRAN
+      - /home/hpe/.ssh:/home/hpe/.ssh:ro

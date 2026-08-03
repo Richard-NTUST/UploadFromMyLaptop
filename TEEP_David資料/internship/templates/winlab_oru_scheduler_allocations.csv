@@ -1,0 +1,2 @@
+run_id,timestamp_utc,frame,slot,rnti,scheduler_mode,rb_start,rb_size,mcs,tbs_bytes,nr_of_layers,beam_idx,harq_pid,is_retx,dl_thr_ue,coeff_ue,notes
+run001,2026-06-29T00:00:00.000Z,,,,oai_original,,,,,,,,,,,

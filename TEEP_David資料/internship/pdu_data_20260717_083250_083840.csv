@@ -1,0 +1,7 @@
+,result,table,_start,_stop,_time,_value,_field,_measurement,asset_id,asset_tag,category,pdu_ip,sensor_id,sensor_name
+,_result,0,2026-07-17T08:32:50Z,2026-07-17T08:38:40Z,2026-07-17T08:33:44.604041216Z,39.16,active_power,pdu_outlet,17,PDU [ Raritan ] PX4-5256CR-C8E8A0,outlet,192.168.10.72,16,Outlet 2
+,_result,0,2026-07-17T08:32:50Z,2026-07-17T08:38:40Z,2026-07-17T08:34:44.604825856Z,37.53,active_power,pdu_outlet,17,PDU [ Raritan ] PX4-5256CR-C8E8A0,outlet,192.168.10.72,16,Outlet 2
+,_result,0,2026-07-17T08:32:50Z,2026-07-17T08:38:40Z,2026-07-17T08:35:44.632546048Z,40.04,active_power,pdu_outlet,17,PDU [ Raritan ] PX4-5256CR-C8E8A0,outlet,192.168.10.72,16,Outlet 2
+,_result,0,2026-07-17T08:32:50Z,2026-07-17T08:38:40Z,2026-07-17T08:36:44.620534016Z,38.6,active_power,pdu_outlet,17,PDU [ Raritan ] PX4-5256CR-C8E8A0,outlet,192.168.10.72,16,Outlet 2
+,_result,0,2026-07-17T08:32:50Z,2026-07-17T08:38:40Z,2026-07-17T08:37:44.619083008Z,38.53,active_power,pdu_outlet,17,PDU [ Raritan ] PX4-5256CR-C8E8A0,outlet,192.168.10.72,16,Outlet 2
+

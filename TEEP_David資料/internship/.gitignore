@@ -1,0 +1,22 @@
+# Local notes / scratch
+Note Info/
+
+# Reference material (kept as separate clone)
+Reference/
+
+tmp_poet_extract.py
+
+# Python virtual environments
+.venv/
+venv/*
+srsRAN/
+
+# External Repos
+External/*
+
+# OAI
+OAI/*
+
+rapps/*
+# Local SSH/source snapshots from lab machines
+remote_snapshots/

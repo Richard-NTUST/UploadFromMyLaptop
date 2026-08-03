@@ -1,0 +1,23 @@
+{
+  "attach_timeout": 300,
+  "bandwidth": [
+    200
+  ],
+  "cloud_e2e_py": "/home/hpe/CRAN/ocloud-helm-templates/cloud_e2e.py",
+  "exp_bandwidth_py": "/home/hpe/ming-logs/exp_bandwidth.py",
+  "gap_time": 2,
+  "iapc_host": "sshuser@140.118.162.81",
+  "iapc_port": 24,
+  "keep_ue_online_on_failure": true,
+  "ming_logs_dir": "/home/hpe/ming-logs",
+  "mode": "ocloud",
+  "output_root": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp",
+  "period": 3600,
+  "ping": null,
+  "server": "hpe",
+  "settle_time": 30,
+  "target_identity": "hpe-pegatron-ru-o",
+  "ue_model": "samsung",
+  "ue_serial": "R5CN30TMBYR",
+  "uplink": false
+}

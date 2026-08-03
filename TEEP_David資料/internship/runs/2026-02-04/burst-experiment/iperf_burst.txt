@@ -1,0 +1,216 @@
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 53599 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.70 GBytes  48.9 Gbits/sec  186661  
+[  5]   1.00-2.00   sec  13.4 GBytes   115 Gbits/sec  439534  
+[  5]   2.00-3.00   sec  12.3 GBytes   106 Gbits/sec  403725  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  31.4 GBytes  90.0 Gbits/sec  0.000 ms  0/1029920 (0%)  sender
+[  5]   0.00-3.00   sec  29.2 GBytes  83.7 Gbits/sec  0.005 ms  72183/1029873 (7%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 50025 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.70 GBytes  49.0 Gbits/sec  186819  
+[  5]   1.00-2.00   sec  12.2 GBytes   105 Gbits/sec  399828  
+[  5]   2.00-3.00   sec  12.2 GBytes   105 Gbits/sec  399342  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  30.1 GBytes  86.1 Gbits/sec  0.000 ms  0/985989 (0%)  sender
+[  5]   0.00-3.00   sec  30.1 GBytes  86.1 Gbits/sec  0.000 ms  249/985989 (0.025%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 54051 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  6.04 GBytes  51.8 Gbits/sec  197780  
+[  5]   1.00-2.00   sec  13.1 GBytes   112 Gbits/sec  428754  
+[  5]   2.00-3.00   sec  12.3 GBytes   106 Gbits/sec  403242  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  31.4 GBytes  90.0 Gbits/sec  0.000 ms  0/1029776 (0%)  sender
+[  5]   0.00-3.00   sec  31.3 GBytes  89.5 Gbits/sec  0.001 ms  4709/1029776 (0.46%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 38113 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  6.27 GBytes  53.9 Gbits/sec  205458  
+[  5]   1.00-2.00   sec  12.7 GBytes   109 Gbits/sec  417356  
+[  5]   2.00-3.00   sec  12.4 GBytes   107 Gbits/sec  407007  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  31.4 GBytes  90.0 Gbits/sec  0.000 ms  0/1029821 (0%)  sender
+[  5]   0.00-3.00   sec  31.4 GBytes  89.7 Gbits/sec  0.001 ms  2533/1029821 (0.25%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 58940 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.81 GBytes  49.9 Gbits/sec  190247  
+[  5]   1.00-2.00   sec  11.8 GBytes   101 Gbits/sec  386854  
+[  5]   2.00-3.00   sec  11.8 GBytes   102 Gbits/sec  387554  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  29.4 GBytes  84.3 Gbits/sec  0.000 ms  0/964655 (0%)  sender
+[  5]   0.00-3.00   sec  29.4 GBytes  84.3 Gbits/sec  0.001 ms  76/964655 (0.0079%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 53173 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.87 GBytes  50.4 Gbits/sec  192264  
+[  5]   1.00-2.00   sec  12.3 GBytes   106 Gbits/sec  404286  
+[  5]   2.00-3.00   sec  12.4 GBytes   106 Gbits/sec  406155  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  30.6 GBytes  87.6 Gbits/sec  0.000 ms  0/1002705 (0%)  sender
+[  5]   0.00-3.00   sec  30.6 GBytes  87.6 Gbits/sec  0.001 ms  137/1002705 (0.014%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 38694 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.59 GBytes  48.0 Gbits/sec  183289  
+[  5]   1.00-2.00   sec  12.5 GBytes   107 Gbits/sec  408685  
+[  5]   2.00-3.00   sec  12.5 GBytes   108 Gbits/sec  410653  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  30.6 GBytes  87.6 Gbits/sec  0.000 ms  0/1002627 (0%)  sender
+[  5]   0.00-3.00   sec  30.6 GBytes  87.6 Gbits/sec  0.001 ms  32/1002627 (0.0032%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 33403 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.45 GBytes  46.8 Gbits/sec  178427  
+[  5]   1.00-2.00   sec  8.54 GBytes  73.4 Gbits/sec  279948  
+[  5]   2.00-3.00   sec  9.90 GBytes  85.0 Gbits/sec  324295  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  23.9 GBytes  68.4 Gbits/sec  0.000 ms  0/782670 (0%)  sender
+[  5]   0.00-3.00   sec  23.9 GBytes  68.4 Gbits/sec  0.001 ms  236/782670 (0.03%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 37323 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  4.83 GBytes  41.5 Gbits/sec  158322  
+[  5]   1.00-2.00   sec  9.15 GBytes  78.6 Gbits/sec  299665  
+[  5]   2.00-3.00   sec  9.16 GBytes  78.7 Gbits/sec  300174  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  23.1 GBytes  66.2 Gbits/sec  0.000 ms  0/758161 (0%)  sender
+[  5]   0.00-3.00   sec  23.1 GBytes  66.2 Gbits/sec  0.000 ms  157/758161 (0.021%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 32833 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.78 GBytes  49.7 Gbits/sec  189542  
+[  5]   1.00-2.00   sec  12.5 GBytes   107 Gbits/sec  409738  
+[  5]   2.00-3.00   sec  12.6 GBytes   108 Gbits/sec  413612  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  30.9 GBytes  88.5 Gbits/sec  0.000 ms  0/1012892 (0%)  sender
+[  5]   0.00-3.00   sec  30.9 GBytes  88.3 Gbits/sec  0.000 ms  1874/1012892 (0.19%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 35590 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.62 GBytes  48.3 Gbits/sec  184131  
+[  5]   1.00-2.00   sec  11.5 GBytes  99.0 Gbits/sec  377668  
+[  5]   2.00-3.00   sec  12.1 GBytes   104 Gbits/sec  395045  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  29.2 GBytes  83.6 Gbits/sec  0.000 ms  0/956844 (0%)  sender
+[  5]   0.00-3.00   sec  29.2 GBytes  83.6 Gbits/sec  0.001 ms  62/956844 (0.0065%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 48741 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.43 GBytes  46.6 Gbits/sec  177972  
+[  5]   1.00-2.00   sec  11.8 GBytes   101 Gbits/sec  387175  
+[  5]   2.00-3.00   sec  12.0 GBytes   103 Gbits/sec  392162  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  29.2 GBytes  83.6 Gbits/sec  0.000 ms  0/957309 (0%)  sender
+[  5]   0.00-3.00   sec  29.2 GBytes  83.6 Gbits/sec  0.001 ms  572/957309 (0.06%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 35197 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.98 GBytes  51.3 Gbits/sec  195866  
+[  5]   1.00-2.00   sec  12.4 GBytes   106 Gbits/sec  405649  
+[  5]   2.00-3.00   sec  12.3 GBytes   106 Gbits/sec  402995  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  30.7 GBytes  87.8 Gbits/sec  0.000 ms  0/1004510 (0%)  sender
+[  5]   0.00-3.00   sec  30.7 GBytes  87.8 Gbits/sec  0.000 ms  33/1004510 (0.0033%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 50811 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  6.01 GBytes  51.6 Gbits/sec  197048  
+[  5]   1.00-2.00   sec  12.5 GBytes   107 Gbits/sec  409542  
+[  5]   2.00-3.00   sec  12.6 GBytes   108 Gbits/sec  412881  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  31.1 GBytes  89.1 Gbits/sec  0.000 ms  0/1019471 (0%)  sender
+[  5]   0.00-3.00   sec  31.1 GBytes  89.0 Gbits/sec  0.000 ms  520/1019471 (0.051%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 58930 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  6.03 GBytes  51.8 Gbits/sec  197598  
+[  5]   1.00-2.00   sec  13.0 GBytes   112 Gbits/sec  427111  
+[  5]   2.00-3.00   sec  12.4 GBytes   106 Gbits/sec  405169  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  31.4 GBytes  90.0 Gbits/sec  0.000 ms  0/1029878 (0%)  sender
+[  5]   0.00-3.00   sec  31.4 GBytes  89.9 Gbits/sec  0.001 ms  1355/1029878 (0.13%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 49185 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  6.03 GBytes  51.8 Gbits/sec  197593  
+[  5]   1.00-2.00   sec  12.4 GBytes   106 Gbits/sec  404907  
+[  5]   2.00-3.00   sec  12.3 GBytes   106 Gbits/sec  402835  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  30.7 GBytes  87.8 Gbits/sec  0.000 ms  0/1005335 (0%)  sender
+[  5]   0.00-3.00   sec  30.7 GBytes  87.8 Gbits/sec  0.001 ms  148/1005335 (0.015%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 56153 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.74 GBytes  49.3 Gbits/sec  188240  
+[  5]   1.00-2.00   sec  12.2 GBytes   105 Gbits/sec  400343  
+[  5]   2.00-3.00   sec  12.3 GBytes   106 Gbits/sec  402692  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  30.3 GBytes  86.6 Gbits/sec  0.000 ms  0/991275 (0%)  sender
+[  5]   0.00-3.00   sec  30.2 GBytes  86.6 Gbits/sec  0.001 ms  66/991275 (0.0067%)  receiver
+
+iperf Done.
+Connecting to host 127.0.0.1, port 5201
+[  5] local 127.0.0.1 port 48820 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  5.82 GBytes  50.0 Gbits/sec  190659  
+[  5]   1.00-2.00   sec  12.1 GBytes   104 Gbits/sec  396205  
+[  5]   2.00-3.00   sec  12.1 GBytes   104 Gbits/sec  397389  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-3.00   sec  30.0 GBytes  86.0 Gbits/sec  0.000 ms  0/984253 (0%)  sender
+[  5]   0.00-3.00   sec  30.0 GBytes  86.0 Gbits/sec  0.001 ms  136/984253 (0.014%)  receiver
+
+iperf Done.

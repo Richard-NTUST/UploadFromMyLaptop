@@ -1,0 +1,100 @@
+bplatinum@noobplatinum-IdeaPad-Pro-5-14IAH10:~/Videos/TEEP$ iperf3 -c localhost -p 5201 -t 10 -P 1 -b 30G
+
+# Check 60G single stream
+iperf3 -c localhost -p 5201 -t 10 -P 1 -b 60G
+Connecting to host localhost, port 5201
+[  5] local 127.0.0.1 port 56870 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  3.49 GBytes  30.0 Gbits/sec    0   3.37 MBytes       
+[  5]   1.00-2.00   sec  3.49 GBytes  30.0 Gbits/sec    1   3.68 MBytes       
+[  5]   2.00-3.00   sec  3.49 GBytes  30.0 Gbits/sec    0   3.68 MBytes       
+[  5]   3.00-4.00   sec  3.49 GBytes  30.0 Gbits/sec    0   3.68 MBytes       
+[  5]   4.00-5.00   sec  3.49 GBytes  30.0 Gbits/sec    0   3.68 MBytes       
+[  5]   5.00-6.00   sec  3.49 GBytes  30.0 Gbits/sec    0   5.62 MBytes       
+[  5]   6.00-7.00   sec  3.49 GBytes  30.0 Gbits/sec    0   5.62 MBytes       
+[  5]   7.00-8.00   sec  3.49 GBytes  30.0 Gbits/sec    0   5.62 MBytes       
+[  5]   8.00-9.00   sec  3.49 GBytes  30.0 Gbits/sec    0   5.62 MBytes       
+[  5]   9.00-10.00  sec  3.49 GBytes  30.0 Gbits/sec    1   5.62 MBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-10.00  sec  34.9 GBytes  30.0 Gbits/sec    2             sender
+[  5]   0.00-10.00  sec  34.9 GBytes  30.0 Gbits/sec                  receiver
+
+iperf Done.
+Connecting to host localhost, port 5201
+[  5] local 127.0.0.1 port 56190 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  5.79 GBytes  49.8 Gbits/sec    0   2.00 MBytes       
+[  5]   1.00-2.00   sec  5.58 GBytes  48.0 Gbits/sec    0   2.94 MBytes       
+[  5]   2.00-3.00   sec  6.99 GBytes  60.0 Gbits/sec    0   3.25 MBytes       
+[  5]   3.00-4.00   sec  6.98 GBytes  60.0 Gbits/sec    0   3.25 MBytes       
+[  5]   4.00-5.00   sec  6.99 GBytes  60.0 Gbits/sec    0   3.25 MBytes       
+[  5]   5.00-6.00   sec  6.98 GBytes  59.9 Gbits/sec    0   3.25 MBytes       
+[  5]   6.00-7.00   sec  6.99 GBytes  60.0 Gbits/sec    0   3.25 MBytes       
+[  5]   7.00-8.00   sec  6.98 GBytes  60.0 Gbits/sec    0   3.25 MBytes       
+[  5]   8.00-9.00   sec  6.98 GBytes  60.0 Gbits/sec    0   3.75 MBytes       
+[  5]   9.00-10.00  sec  6.99 GBytes  60.0 Gbits/sec    0   3.75 MBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-10.00  sec  69.8 GBytes  60.0 Gbits/sec    0             sender
+[  5]   0.00-10.00  sec  69.8 GBytes  60.0 Gbits/sec                  receiver
+
+iperf Done.
+noobplatinum@noobplatinum-IdeaPad-Pro-5-14IAH10:~/Videos/TEEP$ lscpu | head -n 40 > cpu_info.txt
+cat /sys/devices/system/cpu/cpufreq/policy*/scaling_governor >> cpu_info.txt
+noobplatinum@noobplatinum-IdeaPad-Pro-5-14IAH10:~/Videos/TEEP$ chmod +x scripts/week3_load_sweep.sh
+./scripts/week3_load_sweep.sh
+Starting Week 3 Load Sweep Experiment...
+Markers will be saved to runs/current_sweep/markers.csv
+Initial Idle (60 s)...
+[2026-01-23T09:38:05Z] MARKER: Start_Initial_Idle
+[2026-01-23T09:39:05Z] MARKER: Stop_Initial_Idle
+=== Round 1 of 3 ===
+Starting Load_L_Run1 (Target: 30G)...
+[2026-01-23T09:39:05Z] MARKER: Start_Load_L_Run1
+Finished Load_L_Run1
+[2026-01-23T09:41:05Z] MARKER: Stop_Load_L_Run1
+Cool-down (60 s)...
+Starting Load_M_Run1 (Target: 60G)...
+[2026-01-23T09:42:05Z] MARKER: Start_Load_M_Run1
+Finished Load_M_Run1
+[2026-01-23T09:44:05Z] MARKER: Stop_Load_M_Run1
+Cool-down (60 s)...
+Starting Load_H_Run1 (Target: 0)...
+[2026-01-23T09:45:05Z] MARKER: Start_Load_H_Run1
+Finished Load_H_Run1
+[2026-01-23T09:47:05Z] MARKER: Stop_Load_H_Run1
+Cool-down (60 s)...
+=== Round 2 of 3 ===
+Starting Load_L_Run2 (Target: 30G)...
+[2026-01-23T09:48:05Z] MARKER: Start_Load_L_Run2
+Finished Load_L_Run2
+[2026-01-23T09:50:05Z] MARKER: Stop_Load_L_Run2
+Cool-down (60 s)...
+Starting Load_M_Run2 (Target: 60G)...
+[2026-01-23T09:51:05Z] MARKER: Start_Load_M_Run2
+Finished Load_M_Run2
+[2026-01-23T09:53:05Z] MARKER: Stop_Load_M_Run2
+Cool-down (60 s)...
+Starting Load_H_Run2 (Target: 0)...
+[2026-01-23T09:57:11Z] MARKER: Start_Load_H_Run2
+Finished Load_H_Run2
+[2026-01-23T09:59:11Z] MARKER: Stop_Load_H_Run2
+Cool-down (60 s)...
+=== Round 3 of 3 ===
+Starting Load_L_Run3 (Target: 30G)...
+[2026-01-23T10:00:11Z] MARKER: Start_Load_L_Run3
+Finished Load_L_Run3
+[2026-01-23T10:02:11Z] MARKER: Stop_Load_L_Run3
+Cool-down (60 s)...
+Starting Load_M_Run3 (Target: 60G)...
+[2026-01-23T10:03:11Z] MARKER: Start_Load_M_Run3
+Finished Load_M_Run3
+[2026-01-23T10:05:11Z] MARKER: Stop_Load_M_Run3
+Cool-down (60 s)...
+Starting Load_H_Run3 (Target: 0)...
+[2026-01-23T10:06:11Z] MARKER: Start_Load_H_Run3
+Finished Load_H_Run3
+[2026-01-23T10:08:11Z] MARKER: Stop_Load_H_Run3
+Cool-down (60 s)...
+Experiment Complete.

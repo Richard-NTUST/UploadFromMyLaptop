@@ -1,0 +1,2 @@
+run_id,timestamp_utc,source,power_w,voltage_v,current_a,energy_wh,energy_j,sample_interval_s,raw_source_ref,notes
+run001,2026-06-29T00:00:00.000Z,cortexdc_pdu,,,,,,,,

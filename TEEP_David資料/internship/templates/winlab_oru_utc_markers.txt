@@ -1,0 +1,4 @@
+2026-06-29T00:00:00.000Z RUN_START run_id=run001 scheduler_mode=oai_original test_case=f1-pegatron-joule-cpu-bandwidth offered_rate_mbps=100
+2026-06-29T00:00:30.000Z STABILIZATION_END run_id=run001
+2026-06-29T00:05:30.000Z STEADY_END run_id=run001
+2026-06-29T00:05:31.000Z RUN_STOP run_id=run001

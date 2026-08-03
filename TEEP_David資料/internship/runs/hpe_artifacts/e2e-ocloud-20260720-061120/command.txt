@@ -1,0 +1,1 @@
+python3 /home/hpe/CRAN/ocloud-helm-templates/cloud_e2e.py --bandwidth 200 --period 3600 --gap-time 2 --ue-model samsung --settle-time 30 --attach-timeout 300 --keep-ue-online-on-failure

@@ -1,0 +1,16 @@
+2026-01-28T10:19:48Z
+scaph_process_disk_read_bytes{pid="5230",exe="/usr/bin/grep",cmdline="grep--color=auto-Escaph_host_power_microwatts|scaph_host_energy_microjoules"} 0
+scaph_process_disk_total_write_bytes{pid="5230",exe="/usr/bin/grep",cmdline="grep--color=auto-Escaph_host_power_microwatts|scaph_host_energy_microjoules"} 0
+scaph_process_memory_virtual_bytes{pid="5230",exe="/usr/bin/grep",cmdline="grep--color=auto-Escaph_host_power_microwatts|scaph_host_energy_microjoules"} 9519104
+scaph_process_disk_total_read_bytes{pid="5230",exe="/usr/bin/grep",cmdline="grep--color=auto-Escaph_host_power_microwatts|scaph_host_energy_microjoules"} 0
+scaph_process_disk_write_bytes{pid="5230",exe="/usr/bin/grep",cmdline="grep--color=auto-Escaph_host_power_microwatts|scaph_host_energy_microjoules"} 0
+scaph_process_power_consumption_microwatts{pid="5230",exe="/usr/bin/grep",cmdline="grep--color=auto-Escaph_host_power_microwatts|scaph_host_energy_microjoules"} 0
+scaph_process_cpu_usage_percentage{pid="5230",exe="/usr/bin/grep",cmdline="grep--color=auto-Escaph_host_power_microwatts|scaph_host_energy_microjoules"} 0
+scaph_process_memory_bytes{pid="5230",exe="/usr/bin/grep",cmdline="grep--color=auto-Escaph_host_power_microwatts|scaph_host_energy_microjoules"} 2301952
+# HELP scaph_host_power_microwatts Power measurement on the whole host, in microwatts
+# TYPE scaph_host_power_microwatts gauge
+scaph_host_power_microwatts{value_source="powercap_rapl_psys"} 4351285
+# HELP scaph_host_energy_microjoules Energy measurement for the whole host, as extracted from the sensor, in microjoules.
+# TYPE scaph_host_energy_microjoules counter
+scaph_host_energy_microjoules{value_source="powercap_rapl_psys"} 7016492474
+---

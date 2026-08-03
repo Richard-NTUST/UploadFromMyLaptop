@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Jesaya David" />
+  <meta name="dcterms.date" content="2026-02-05" />
+  <title>Reproducible O-RU Power Measurement (Software Proxy)</title>
+  <style>
+    html {
+      font-size: 11pt;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="/usr/share/javascript/mathjax/MathJax.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Reproducible O-RU Power Measurement (Software
+Proxy)</h1>
+<p class="subtitle">TEEP Final Report Draft (Markdown-first)</p>
+<p class="author">Jesaya David</p>
+<p class="date">2026-02-05</p>
+</header>
+<h1 id="abstract">Abstract</h1>
+<p>This work develops a <strong>reproducible power-measurement
+methodology</strong> for an O-RAN Radio Unit (O-RU), with an initial
+<strong>software-first proxy</strong> executed on a general-purpose
+Linux host. Because RU hardware and lab-grade instrumentation were not
+always available, we measure <strong>platform power</strong> using
+Intel/AMD RAPL energy counters exposed via Linux and collected by
+<strong>Scaphandre</strong>.</p>
+<p>We define repeatable workload states (Idle, Active-Idle, Load-L/M/H),
+synchronize scenario boundaries via explicit UTC markers, and compute
+power/energy statistics on <strong>trimmed steady-state
+windows</strong>. A multi-round sweep shows a strong Idle→Active step
+and a narrower active band across load levels. A “burst vs smooth” proxy
+experiment demonstrates that <strong>race-to-sleep (TDM-style duty
+cycling)</strong> can reduce average platform power by ~48% at
+iso-throughput, motivating scheduler-level future work.</p>
+<p><strong>Scope note:</strong> Reported power values are
+<strong>platform power under RU-like workload</strong>, not RU AC/DC
+input power.</p>
+<h1 id="background-and-goal">1. Background and Goal</h1>
+<h2 id="problem-statement">1.1 Problem statement</h2>
+<p>Energy consumption in RAN infrastructure is dominated by the base
+station and radio unit. To compare energy behavior across configurations
+and ultimately across vendors/hardware, we need a <strong>measurement
+procedure</strong> that is: - repeatable (same scenario → same result
+within noise), - traceable (clear measurement point, units, timestamps),
+- reviewer-safe (explicit windowing, clear limitations).</p>
+<h2 id="project-goal">1.2 Project goal</h2>
+<p>Establish a reproducible methodology that can be executed now
+(software proxy) and later transferred to hardware-grade RU input power
+measurement without changing the scenario structure.</p>
+<h1 id="measurement-point-and-metrics">2. Measurement Point and
+Metrics</h1>
+<h2 id="measurement-point-software-proxy">2.1 Measurement point
+(software proxy)</h2>
+<ul>
+<li><strong>Device under test (DUT):</strong> General-purpose compute
+host running RU-like workload proxy.</li>
+<li><strong>Power instrument:</strong> Scaphandre (Prometheus exporter)
+reading Linux RAPL counters.</li>
+<li><strong>Signal:</strong> <code>scaph_host_power_microwatts</code>
+scraped at ~10 s cadence.</li>
+</ul>
+<h2 id="metrics">2.2 Metrics</h2>
+<p>We compute per-state metrics on steady-state windows: - Average
+power: <span class="math inline">\(P_{avg}\)</span> (W) - Energy: <span
+class="math inline">\(E\)</span> (J) - Throughput: <span
+class="math inline">\(T\)</span> (Gbps) - Efficiency (proxy): <span
+class="math inline">\(\eta = T / P_{avg}\)</span> (Gbps/W)</p>
+<p>Energy is approximated from samples as: <span class="math display">\[
+E \approx \sum_i P_i \Delta t
+\]</span></p>
+<h1 id="scenario-definition">3. Scenario Definition</h1>
+<h2 id="states">3.1 States</h2>
+<ul>
+<li><strong>Idle:</strong> OS baseline, no traffic.</li>
+<li><strong>Active-Idle:</strong> measurement/stack active, traffic
+off.</li>
+<li><strong>Load-L/M/H:</strong> offered load steps (nominally 30% / 60%
+/ 100%).</li>
+</ul>
+<h2 id="run-structure">3.2 Run structure</h2>
+<p>To avoid boundary transients, we: - record explicit
+<code>Start_*</code> / <code>Stop_*</code> markers in UTC, - trim 10 s
+from the start and end of each marked segment, - score only the trimmed
+windows.</p>
+<h1 id="tooling-and-data-formats">4. Tooling and Data Formats</h1>
+<h2 id="toolchain">4.1 Toolchain</h2>
+<ul>
+<li>Scaphandre (power estimator)</li>
+<li>iperf3 (traffic generation)</li>
+<li>Bash scripts for orchestration</li>
+<li>Python scripts for parsing/plotting</li>
+</ul>
+<h2 id="artifact-conventions">4.2 Artifact conventions</h2>
+<ul>
+<li>Raw runs live under <code>runs/YYYY-MM-DD/...</code></li>
+<li>Plots and summaries live under
+<code>assets/YYYY-MM-DD/plots/</code></li>
+</ul>
+<h1 id="experimental-results">5. Experimental Results</h1>
+<h2 id="pilot-power-enabled-pipeline-validation-2026-01-20">5.1 Pilot:
+Power-enabled pipeline validation (2026-01-20)</h2>
+<p>A pilot run validated end-to-end logging, markers, and per-state
+scoring.</p>
+<table>
+<caption>Per-state summary (pilot)</caption>
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>State</th>
+<th style="text-align: right;">Mean Power (W)</th>
+<th style="text-align: right;">Energy (J)</th>
+<th style="text-align: right;">Duration (s)</th>
+<th style="text-align: right;">Throughput (Gbps)</th>
+<th style="text-align: right;">Efficiency (Gbps/W)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pure Idle</td>
+<td style="text-align: right;">1.023</td>
+<td style="text-align: right;">91.6</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td>Active-Idle</td>
+<td style="text-align: right;">1.859</td>
+<td style="text-align: right;">319.7</td>
+<td style="text-align: right;">181</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td>Load-M</td>
+<td style="text-align: right;">37.631</td>
+<td style="text-align: right;">10704.6</td>
+<td style="text-align: right;">292</td>
+<td style="text-align: right;">97.464</td>
+<td style="text-align: right;">2.590</td>
+</tr>
+</tbody>
+</table>
+<p>Source artifacts: <code>runs/2026-01-20/</code>.</p>
+<h2 id="week-3-load-sweep-statistics-2026-01-22">5.2 Week 3: Load sweep
+statistics (2026-01-22)</h2>
+<p>A multi-state sweep (Idle + Load-L/M/H) demonstrates repeatability
+and the “step-function” behavior:</p>
+<table>
+<thead>
+<tr class="header">
+<th>State</th>
+<th style="text-align: right;">Mean (W)</th>
+<th style="text-align: right;">Std (W)</th>
+<th style="text-align: right;">CV (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Idle</td>
+<td style="text-align: right;">1.4920</td>
+<td style="text-align: right;">0.7964</td>
+<td style="text-align: right;">53.38</td>
+</tr>
+<tr class="even">
+<td>Load-L</td>
+<td style="text-align: right;">50.5983</td>
+<td style="text-align: right;">2.9533</td>
+<td style="text-align: right;">5.84</td>
+</tr>
+<tr class="odd">
+<td>Load-M</td>
+<td style="text-align: right;">50.2996</td>
+<td style="text-align: right;">3.4350</td>
+<td style="text-align: right;">6.83</td>
+</tr>
+<tr class="even">
+<td>Load-H</td>
+<td style="text-align: right;">48.8443</td>
+<td style="text-align: right;">8.3225</td>
+<td style="text-align: right;">17.04</td>
+</tr>
+</tbody>
+</table>
+<p>Key observation: once traffic begins, platform power jumps from ~1–2
+W to ~50 W, with only modest separation between L/M/H compared to the
+Idle→Active jump.</p>
+<p>Supporting plots: - Timeline: <img
+src="../../assets/2026-01-22/plots/power_timeline.png"
+alt="Power timeline" /> - Linearity: <img
+src="../../assets/2026-01-22/plots/power_linearity_boxplot.png"
+alt="Linearity boxplot" /></p>
+<h2 id="week-4-gap-analysis-vs-ru-anchor-classes-2026-01-28">5.3 Week 4:
+Gap analysis vs RU anchor classes (2026-01-28)</h2>
+<p>We produced a publishable sensitivity plot and a gap overlay
+comparing the proxy power trace to modeled RU classes.</p>
+<p>Key trimmed-window medians (proxy): - Idle median: <strong>5.696
+W</strong> - Active median: <strong>24.983 W</strong> - 30% load median:
+<strong>23.353 W</strong> - 60% load median: <strong>24.983 W</strong> -
+100% load median: <strong>26.926 W</strong></p>
+<p>RU anchors used (P12-style classes): - Micro RU: <span
+class="math inline">\(P_{min}=59\)</span> W, <span
+class="math inline">\(P_{max}=110\)</span> W - Macro RU: <span
+class="math inline">\(P_{min}=197\)</span> W, <span
+class="math inline">\(P_{max}=531\)</span> W</p>
+<p>Derived ratios (RU / proxy): - <span class="math inline">\(59/5.696
+\approx 10.36\times\)</span> (micro idle vs proxy idle) - <span
+class="math inline">\(197/5.696 \approx 34.59\times\)</span> (macro idle
+vs proxy idle)</p>
+<p>Figures: - Sensitivity: <img
+src="../../assets/2026-01-28/plots/gap_analysis_sensitivity.png"
+alt="Power sensitivity" /> - Gap overlay: <img
+src="../../assets/2026-01-28/plots/gap_analysis_simulation.png"
+alt="Gap analysis" /></p>
+<h2 id="two-host-sweep-windows-sink-2026-02-05">5.4 Two-host sweep
+(Windows sink) (2026-02-05)</h2>
+<p>To increase credibility beyond localhost/loopback, we repeated the
+sweep with <strong>two hosts</strong>: - <strong>Measured host (Linux
+laptop):</strong> power logging + iperf3 client - <strong>Sink (Windows
+PC):</strong> iperf3 server</p>
+<p>Artifacts: - Run folder: <code>runs/2026-02-05/sweep-120233/</code> -
+Stats table: <code>assets/2026-02-05/plots/stats_summary.md</code> -
+Repeatability table:
+<code>assets/2026-02-05/plots/repeatability_per_run.md</code> -
+Throughput table (client logs):
+<code>runs/2026-02-05/sweep-120233/iperf_client_summary.md</code></p>
+<p>Trimmed-window power summary:</p>
+<table>
+<thead>
+<tr class="header">
+<th>State</th>
+<th style="text-align: right;">Mean (W)</th>
+<th style="text-align: right;">Std (W)</th>
+<th style="text-align: right;">CV (%)</th>
+<th style="text-align: right;">Min (W)</th>
+<th style="text-align: right;">Max (W)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Idle</td>
+<td style="text-align: right;">3.4075</td>
+<td style="text-align: right;">0.2798</td>
+<td style="text-align: right;">8.21</td>
+<td style="text-align: right;">2.9361</td>
+<td style="text-align: right;">4.1295</td>
+</tr>
+<tr class="even">
+<td>Load-L</td>
+<td style="text-align: right;">6.1682</td>
+<td style="text-align: right;">0.3811</td>
+<td style="text-align: right;">6.18</td>
+<td style="text-align: right;">5.0077</td>
+<td style="text-align: right;">6.8600</td>
+</tr>
+<tr class="odd">
+<td>Load-M</td>
+<td style="text-align: right;">6.1960</td>
+<td style="text-align: right;">0.3657</td>
+<td style="text-align: right;">5.90</td>
+<td style="text-align: right;">5.3906</td>
+<td style="text-align: right;">7.3279</td>
+</tr>
+<tr class="even">
+<td>Load-H</td>
+<td style="text-align: right;">6.5841</td>
+<td style="text-align: right;">1.4690</td>
+<td style="text-align: right;">22.31</td>
+<td style="text-align: right;">5.3178</td>
+<td style="text-align: right;">16.3342</td>
+</tr>
+</tbody>
+</table>
+<p>Notes: - This run used <strong>TCP mode</strong> (best-effort). The
+L/M/H labels are nominal; achieved throughput depends on link capacity
+and TCP behavior. - Offered throughput was
+<strong>Wi‑Fi-limited</strong> in this run; achieved receiver rates were
+~51–61 Mbps across L/M/H. - Load-H shows a high CV due to a single large
+spike (max 16.33 W) concentrated in Run 2; repeatability per-run
+statistics isolate this event.</p>
+<p>Supporting plots: - Timeline: <img
+src="../../assets/2026-02-05/plots/power_timeline.png"
+alt="Power timeline" /> - Linearity: <img
+src="../../assets/2026-02-05/plots/power_linearity_boxplot.png"
+alt="Linearity boxplot" /></p>
+<h2 id="validation-burst-vs-smooth-at-iso-throughput-2026-02-04">5.5
+Validation: Burst vs smooth at iso-throughput (2026-02-04)</h2>
+<p>We tested a “race-to-sleep” proxy using duty-cycled traffic.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Phase</th>
+<th style="text-align: right;">Duration (s)</th>
+<th style="text-align: right;">Avg Power (W)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Idle baseline</td>
+<td style="text-align: right;">60.0</td>
+<td style="text-align: right;">4.79</td>
+</tr>
+<tr class="even">
+<td>Smooth (30%)</td>
+<td style="text-align: right;">180.0</td>
+<td style="text-align: right;">21.78</td>
+</tr>
+<tr class="odd">
+<td>Burst (30% duty)</td>
+<td style="text-align: right;">180.2</td>
+<td style="text-align: right;">11.25</td>
+</tr>
+</tbody>
+</table>
+<p>Savings: <span class="math inline">\(21.78 - 11.25 = 10.53\)</span> W
+(48.4%).</p>
+<h1 id="discussion">6. Discussion</h1>
+<h2 id="what-the-proxy-can-and-cannot-claim">6.1 What the proxy can and
+cannot claim</h2>
+<p>This methodology reliably measures <strong>platform power
+response</strong> to workload state changes. It does not directly
+measure: - RU power amplifier behavior, - RU AC/DC input power, - RF
+output power or EIRP.</p>
+<h2 id="interpreting-step-function-behavior">6.2 Interpreting
+step-function behavior</h2>
+<p>The Week 3/4 sweeps suggest the platform enters a high-power
+operating regime as soon as sustained traffic begins (CPU
+frequency/uncore/NIC activity), after which incremental throughput
+changes do not strongly increase platform power.</p>
+<h2 id="relation-to-prior-work-context-for-the-gap">6.3 Relation to
+prior work (context for the “gap”)</h2>
+<p>Our observations are consistent with the recurring theme in
+base-station power modeling literature: <strong>static/offset power
+dominates at low load</strong>, so efficiency gains require enabling
+real sleep states rather than only reducing utilization.</p>
+<p>For an annotated literature bridge (working notes), see: - “How Much
+Energy is Needed to Run a Wireless Network?” (E³F framework; static
+power issue) - “Energy Efficiency Improvements through Micro Sites …”
+(offset power importance) - “A Parameterized Base Station Power Model”
+(load/bandwidth/antenna parameterization) - “Deploying Dense Networks
+for Maximal Energy Efficiency …” (circuit power dominance;
+multiplexing)</p>
+<h1 id="limitations-and-threats-to-validity">7. Limitations and Threats
+to Validity</h1>
+<ul>
+<li>Software proxy only (no RU AC/DC input).</li>
+<li>Sampling cadence (~10 s) limits transient analysis.</li>
+<li>Loopback/localhost traffic can overemphasize CPU/network stack vs
+NIC/PHY behavior.</li>
+<li>Background OS tasks and CPU governor can bias the “active
+band.”</li>
+</ul>
+<h1 id="data-quality-and-acceptance-criteria-proposed">8. Data Quality
+and Acceptance Criteria (Proposed)</h1>
+<p>These criteria are chosen to be practical for an internship report
+while still being reviewer-safe.</p>
+<h2 id="repeatability-power">8.1 Repeatability (power)</h2>
+<p>For each state (Idle, Active-Idle, Load-L/M/H), compute the
+coefficient of variation: <span class="math display">\[
+CV = \frac{\sigma}{\mu} \times 100\%
+\]</span></p>
+<p>Proposed thresholds (steady-state, trimmed windows): - Load states
+(L/M/H): target <span class="math inline">\(CV \le 10\%\)</span> (good),
+<span class="math inline">\(CV \le 5\%\)</span> (strong). - Active-Idle:
+target <span class="math inline">\(CV \le 10\%\)</span>. - Idle: may
+exhibit higher CV due to low absolute power; accept if Idle is clearly
+separated from Active band and the windowing policy is consistent.</p>
+<h2 id="state-separability-sanity">8.2 State separability (sanity)</h2>
+<ul>
+<li>Ordering check (typical): <span class="math inline">\(P_{idle} &lt;
+P_{active} &lt; P_{load}\)</span>.</li>
+<li>Practical check: state-to-state differences should be visually
+obvious in the timeline plot and supported by per-state statistics
+(mean/median).</li>
+</ul>
+<h1 id="reproducibility-how-to-run">9. Reproducibility (How to Run)</h1>
+<h2 id="prerequisites-ubuntu-native-linux-on-the-measured-host">9.1
+Prerequisites (Ubuntu / native Linux on the measured host)</h2>
+<ul>
+<li>RAPL must be available (typically
+<code>/sys/class/powercap</code>).</li>
+<li>Scaphandre Prometheus exporter running and reachable at
+<code>http://localhost:8080/metrics</code>.</li>
+<li><code>iperf3</code> installed.</li>
+</ul>
+<p>Start Scaphandre (Docker example):</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> docker run <span class="at">--rm</span> <span class="at">--privileged</span> <span class="at">--pid</span><span class="op">=</span>host <span class="dt">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">-p</span> 8080:8080 <span class="dt">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">-v</span> /proc:/proc:ro <span class="dt">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">-v</span> /sys:/sys:ro <span class="dt">\</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    hubblo/scaphandre prometheus <span class="at">--address</span> 0.0.0.0 <span class="at">--port</span> 8080</span></code></pre></div>
+<p>Start iperf3 server (same host for loopback experiments):</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">iperf3</span> <span class="at">-s</span></span></code></pre></div>
+<h2 id="two-host-topology-recommended-for-credibility">9.2 Two-host
+topology (recommended for credibility)</h2>
+<p>Use a separate sink host to avoid loopback artifacts.</p>
+<ul>
+<li><strong>Host A (Measured DUT, Ubuntu):</strong> runs Scaphandre +
+the iperf3 client + the sweep scripts.</li>
+<li><strong>Host B (Traffic sink, Windows/WSL acceptable):</strong> runs
+an iperf3 server.</li>
+</ul>
+<p>Notes for Windows/WSL sink: - Simplest: run <code>iperf3</code>
+server natively on Windows (better throughput, fewer networking
+surprises). - If you run the server inside WSL2, inbound connections may
+require Windows port forwarding due to WSL2 NAT.</p>
+<h2 id="week-4-sweep-gap-analysis-inputs">9.3 Week 4 sweep (gap analysis
+inputs)</h2>
+<p>This produces a new run folder containing <code>power_uw.txt</code>,
+<code>markers.csv</code>, and per-segment iperf logs.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/run_week4_gap_run.sh</span></span></code></pre></div>
+<p>Optional overrides (choose targets that match your link; e.g., 1 GbE
+cannot sustain <code>30G</code>):</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">TARGET_HOST</span><span class="op">=</span>127.0.0.1 <span class="va">MODE</span><span class="op">=</span>udp <span class="va">TARGET_L</span><span class="op">=</span>30G <span class="va">TARGET_M</span><span class="op">=</span>60G <span class="va">TARGET_H</span><span class="op">=</span>90G <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">OUTPUT_DIR</span><span class="op">=</span>runs/<span class="va">$(</span><span class="fu">date</span> <span class="at">-u</span> +%Y-%m-%d<span class="va">)</span>/sweep-01 <span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/run_week4_gap_run.sh</span></span></code></pre></div>
+<p>Analyze and generate plots/stat summaries:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/analyze_week3_data.py runs/2026-01-28/sweep-01</span></code></pre></div>
+<h2 id="burst-experiment">9.4 Burst experiment</h2>
+<p>Run:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./scripts/run_burst_experiment.sh</span></span></code></pre></div>
+<p>Notes: - The run artifacts go under
+<code>runs/YYYY-MM-DD/burst-experiment/</code>. - The analysis script
+currently reads <code>power_uw.txt</code> from the repository root (not
+from the run folder). If your power log is stored elsewhere,
+copy/symlink it to <code>./power_uw.txt</code> before running the
+analysis.</p>
+<p>Analyze:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/analyze_burst_experiment.py</span></code></pre></div>
+<h2 id="export-to-pdf-optional">9.5 Export to PDF (optional)</h2>
+<p>If you have <code>pandoc</code> installed:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pandoc</span> docs/FinalReport/00_Final_Report_Draft.md <span class="at">-o</span> final_report.pdf</span></code></pre></div>
+<h1 id="conclusions">9. Conclusions</h1>
+<ul>
+<li>A marker-aligned, trimmed-window procedure yields stable,
+reviewer-safe per-state power statistics.</li>
+<li>The proxy platform shows a strong Idle→Active jump and a narrower
+active band across L/M/H.</li>
+<li>Duty-cycled “bursting” reduces average platform power substantially
+at iso-throughput, motivating scheduler-level TDM approaches.</li>
+</ul>
+<h1 id="future-work">10. Future Work</h1>
+<ul>
+<li>Hardware-in-loop measurement at RU input power (PDU/analyzer),
+preserving the same scenario states and marker policy.</li>
+<li>Multi-host (real NIC path) validation to reduce loopback
+artifacts.</li>
+<li>Scheduler modifications to create controllable idle gaps (TDM) and
+verify micro-sleep entry on RU hardware.</li>
+</ul>
+<h1 id="references-draft">References (draft)</h1>
+<h2 id="internal-repo">Internal (repo)</h2>
+<ul>
+<li>Methodology, SOP, and results drafts under
+<code>docs/FinalReport/</code>.</li>
+<li>Study notes and experiment logs under
+<code>docs/StudyNotes/</code>.</li>
+<li>Raw artifacts under <code>runs/</code> and derived plots under
+<code>assets/</code>.</li>
+</ul>
+<h2 id="literature-notes-need-full-bibtex-later">Literature notes (need
+full BibTeX later)</h2>
+<ul>
+<li><code>assets/2026-02-02/Paper1.md</code></li>
+<li><code>assets/2026-02-02/Paper2.md</code></li>
+<li><code>assets/2026-02-02/Paper3.md</code></li>
+<li><code>assets/2026-02-02/Paper4.md</code></li>
+</ul>
+</body>
+</html>
