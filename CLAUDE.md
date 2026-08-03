@@ -47,6 +47,21 @@ Still worth following for anything written in SOP style (reports, handover-style
 - Checklist items as `- [ ]` with **fully numeric IDs** (`5.1.1`, not `5.1.1.a`).
 - Keep documents concise and purpose-driven; detailed how-to content belongs in its own dedicated file.
 
+### 4a. Link Validity Requirement (added 2026-08-03)
+
+> [!IMPORTANT]
+> Any reference to a file that exists inside `專題` must be a real Markdown hyperlink `[text](relative/path)` — never a backtick-only code span (`` `filename.md` ``) or plain-quoted text. A backtick/code-span renders as inert monospace text, not a clickable link, both locally and on GitHub. Only leave something as plain backtick text if the target genuinely does not exist anywhere under `專題` (e.g. a file that only exists inside David's `internship` repo on the Ubuntu side, not mirrored locally).
+
+Before treating a Daily Note, Meeting Note, or any other SOP-style document as "done" (this is now a standing step in the daily-log/meeting-note SOP, not a one-off cleanup):
+
+- Extract every Markdown link and every backtick-quoted or quoted filename that looks like it refers to a real project file.
+- Confirm each target actually resolves relative to the file's own location (Markdown links resolve relative to the file that contains them — not the repo root, not `專題` itself — same behavior locally and on GitHub).
+- Convert any bare filename mention that should be clickable into a real link; leave commands, metric names, and files that don't exist under `專題` as plain backtick text.
+
+**Known trap (discovered 2026-08-03):** a folder populated via `git clone` (e.g. `Open-Research-Playbook`, `ocloud-telemetry-agent`, or a Windows-side reference copy of David's `internship` repo) carries its own nested `.git` directory. When the parent `專題` repo is `git add`-ed, Git silently records that folder as a **submodule reference ("gitlink", mode `160000`)** instead of tracking its actual files. With no `.gitmodules` entry, GitHub shows a dead folder — the real file contents never actually get pushed. Every link pointing *into* that folder then resolves fine locally but 404s on GitHub after upload, even though the relative-path syntax was correct all along.
+- **Fix:** delete the nested `.git` folder (this sacrifices that folder's own independent commit history / ability to `git pull` upstream updates for it — acceptable for read-only reference clones Richard doesn't develop in directly), then re-track it as regular files: `git rm -r --cached <path>` followed by `git add <path>`. Confirm no `160000`-mode entries remain via `git ls-files -s | grep '^160000'`.
+- **When to check:** any time a new folder is added to `專題` via `git clone` (not `git init` from scratch) — don't assume links into it will work post-push without checking this first.
+
 ---
 
 ## 5. Daily Log — Multiple Systems in Play

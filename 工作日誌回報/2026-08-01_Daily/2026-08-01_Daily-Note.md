@@ -50,7 +50,7 @@
 
 |Task|Reason|Required Action or Support|
 |-|-|-|
-|補齊 [2026-07-30_Meeting-Notes.md](../../會議記錄/2026-07-30_meeting/2026-07-30_Meeting-Notes.md) 底部 Where 區塊的 Related Documents / Related Templates 連結|目前 [工作日誌回報/Open-Research-Playbook](../Open-Research-Playbook)（template_cloned）等相關檔案都還在本機、尚未上傳 Git，指向本機相對路徑的連結沒有意義，故先留空。**優先度低**——單純是連結/流程完整性問題，不影響會議紀錄本身的內容產出|待 Richard 把 `工作日誌回報` 資料夾（含 Open-Research-Playbook clone）整理並上傳到 Git 後，回頭補上正確連結。Richard 預計在下次教授檢查前完成，無明確 due date，不急|
+|~~補齊 [2026-07-30_Meeting-Notes.md](../../會議記錄/2026-07-30_meeting/2026-07-30_Meeting-Notes.md) 底部 Where 區塊的 Related Documents / Related Templates 連結~~ **已解決（2026-08-03）**|原因已不成立：問題根源其實不是「尚未上傳 Git」，而是 `Open-Research-Playbook`、`ocloud-telemetry-agent`、`internship` 三個資料夾各自帶有自己 clone 下來的 `.git`，導致 git 把它們當成子模組（gitlink）而非一般檔案，內容從未真的被推上 GitHub，連結因此點擊無效。已移除三個巢狀 `.git` 並重新以一般檔案 `git add`，且已補上會議紀錄的 Where 區塊連結（見 [2026-07-30_Meeting-Notes.md](../../會議記錄/2026-07-30_meeting/2026-07-30_Meeting-Notes.md) Where 區塊）|Richard 需自行 `git commit` + `git push` 這次的暫存變更（三個資料夾轉為一般檔案），推上去後連結才會真正在 GitHub 上生效|
 
 已知落差（非 blocker，記錄供步驟 2 使用）：此版本 Scaphandre 沒有 `scaph_host_power_microwatts` 這個 metric（改為逐 domain 回報，`grep scaph_host_power` 查無結果），步驟 2 寫分析腳本時要改用 `scaph_domain_power_microwatts` 加總，不要照搬原 guide 的 metric 名稱。
 
@@ -139,5 +139,3 @@ None required — 若之後每篇日誌都比照這次的「資料夾 + 超連�
 
 * [Meeting Notes](../Open-Research-Playbook/templates/F-meeting-notes.md)
 * [AI Daily Self-review Prompt](../Open-Research-Playbook/templates/E-ai-daily-self-review-prompt.md)
-
-喵
