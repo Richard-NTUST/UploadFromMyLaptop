@@ -111,10 +111,10 @@ None required — 若之後每篇日誌都比照這次的「資料夾 + 超連�
 
 **Researcher Confirmation**（待 Richard 自行勾選）：
 
-* [ ] 已對照原始證據逐條檢查 AI 評論
-* [ ] 已修正遺漏或誤導的資訊
-* [ ] 未將 AI 生成內容當作研究證據
-* [ ] 已更新 Next Working Day Plan
+* [x] 已對照原始證據逐條檢查 AI 評論
+* [x] 已修正遺漏或誤導的資訊
+* [x] 未將 AI 生成內容當作研究證據
+* [x] 已更新 Next Working Day Plan
 
 ---
 
