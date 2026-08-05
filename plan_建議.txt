@@ -4,11 +4,12 @@
 ===============================================================
 目前進度總覽
 ===============================================================
-狀態：規劃階段已完成並核准；步驟 1（環境建置）已完成並有實際證據確認（2026-08-01）。準備開始步驟 2（Track A 重現）。
+狀態：規劃階段已完成並核准；步驟 1（環境建置）已完成並有實際證據確認（2026-08-01）；步驟 2（Track A 重現）已完成「管線重現」目標，但 QC 數量級未通過（2026-08-03，有實際證據確認，詳見下方步驟 2 區塊）。下一步已決定（2026-08-04）：QC 數量級落差維持列為 pending、不現在排查；下一個主線任務是步驟 6（銜接 Track B、跟上 David 目前實際進度）。
 - 已完成：三份素材（internship repo、ocloud-telemetry-agent repo、Liu.pdf）已由 AI 探索並整理重點，關鍵落差已與 Richard 確認（見下方 Context）。
 - 已完成（2026-07-31）：讀取本機硬體規格（唯讀，PowerShell），確認 CPU 為 Intel i7-12700H（支援 RAPL），且 C:/D: 是兩顆不同實體硬碟——C:（系統碟）僅 72GB 可用，D:（資料碟）有 599GB 可用。已決定 Ubuntu 整個裝在 D: 那顆硬碟，完全不動 C: 系統碟，降低風險。詳細安裝步驟已寫成獨立指南：TEEP_David資料\步驟1_Ubuntu雙系統建置指南.md。
 - 已完成（2026-08-01，有實際證據確認，含截圖 步驟1.jpg）：Ubuntu 26.04 LTS 已裝在 Disk 1（D:），Disk 0（C:）完全未動；雙系統開機正常（BIOS(F2) 手動切換）；RAPL 驗證通過（/sys/class/powercap/ 節點齊全，energy_uj 讀取正常，不需 modprobe）；Track A 軟體鏈（iperf3、pandas/matplotlib/seaborn、Docker 29.1.3、Scaphandre 容器）全部裝妥並驗證，curl localhost:8080/metrics 讀到真實非零數據（scaph_domain_power_microwatts、scaph_socket_rapl_mmio_energy_microjoules）。詳細證據見下方「步驟 1」區塊。已知落差：此版本 Scaphandre 沒有 scaph_host_power_microwatts 這個 metric，寫步驟 2 分析腳本時要改用 scaph_domain_power_microwatts 加總。
-- 下一個該做的動作：開始步驟 2——先讀 docs/FinalReport/01_Methodology_Reproducible_Measurement.md 與 03_Standard_Operating_Procedure.md，再依序啟動 Scaphandre → iperf3 -s → 執行 scripts/run_week4_gap_run.sh 跑完整 Idle→Load→Idle 序列 → python scripts/analyze_week3_data.py 產圖 → 對照參考圖做 QC gate（注意套用上面提到的 metric 名稱落差）。
+- 已完成（2026-08-03，有實際證據確認，含逐指令記錄 TEEP_David資料\步驟2\暫存.txt 與截圖 工作日誌回報\2026-08-03_Daily\picture1.png/picture2.png）：Track A 完整量測管線（repo clone → metric 修正 → Scaphandre + iperf3 → run_week4_gap_run.sh sweep → analyze_week3_data.py 出圖）已確認可完整重複執行，產出 markers.csv/power_uw.txt/power_timeline.png/power_linearity_boxplot.png/stats_summary.md。但 QC 數量級未過：Idle 0.248W／Load-H 1.189W，比 FinalReport 參考值（Idle ~5.7W→Load-H ~26.9W）低了一個數量級以上，且多數 state 的 CV（變異係數）過高（Load-M 例外，11%），iperf3 流量端本身完全正常（900Mbit/s、0% loss）。診斷判斷問題出在功耗量測端的取樣時間粒度／RAPL counter wraparound 造成雜訊尖峰，而非真正功耗變化。決定：此數據精度落差暫列 pending，不卡進度。詳細見下方「步驟 2」區塊。
+- 下一步已決定（2026-08-04）：QC 數量級落差（步驟 2 pending 項目 7b）先擱置，不現在花時間排查；下一個要走的主線是步驟 6（銜接 Track B、跟上 David 目前實際進度）。步驟 4（背景知識研讀）維持「可隨時平行進行」的原定位，未特別排優先序。
 
 ===============================================================
 Context（為什麼要做這個、關鍵發現）
@@ -47,17 +48,22 @@ Track A 的功耗量測依賴 /sys/class/powercap（Intel RAPL），WSL2 通常�
 - 安裝需求（皆列於 docs/FinalReport/03_Standard_Operating_Procedure.md 的 Prereqs）：Scaphandre（可用 docker run --privileged -v /sys/class/powercap:/sys/class/powercap hubblo/scaphandre prometheus，或原生 binary）、iperf3、Python 3.10+ 搭配 pandas/matplotlib/seaborn。
 
 ===============================================================
-步驟 2：重現 Track A —「軟體代理」功耗-流量敏感度掃描（最短路徑的重現目標）— 尚未開始
+步驟 2：重現 Track A —「軟體代理」功耗-流量敏感度掃描（最短路徑的重現目標）— 已完成（管線重現達成；QC 數量級未通過，2026-08-03）
 ===============================================================
-先完整讀過 docs/FinalReport/01_Methodology_Reproducible_Measurement.md（場景矩陣：Idle → Load-L(30%)/M(60%)/H(100%) × 3 repeats，120s warmup + 300s baseline + 300s/step + 300s cooldown）與 03_Standard_Operating_Procedure.md（含 troubleshooting table），再照 SOP 執行：
+執行依據：TEEP_David資料\步驟2\步驟2_TrackA重現指南.md（AI 讀過 01_Methodology_Reproducible_Measurement.md 與 03_Standard_Operating_Procedure.md 原文後轉譯的執行指南；Richard 本人尚未親自讀過原文，見下方 pending 項目 7a）。
 
-1. 啟動 Scaphandre，curl localhost:8080/metrics 驗證有數據。
-2. 啟動 iperf3 -s。
-3. 執行 scripts/run_week4_gap_run.sh（env vars: TARGET_L/M/H、DURATION、IDLE、OUTPUT_DIR）跑完整 Idle→Load→Idle 序列，產生 markers.csv + power_uw.txt。
-4. python scripts/analyze_week3_data.py runs/<my-run> 產生時序圖、線性度箱型圖、統計摘要。
-5. QC gate：跟參考圖 assets/2026-01-28/plots/gap_analysis_sensitivity.png 比對——Idle 應 <10W、Load 應 >20W、平台段應平坦，markers.csv 每個事件都要有 Start/Stop。目標數量級對照 FinalReport 的既有結果（Idle 5.7W → 100% load 26.9W；Burst/TDM proxy 21.78W→11.25W，約 48% 下降）。
+完成證據摘要（Richard 回報 + AI 逐項確認，含逐指令記錄 TEEP_David資料\步驟2\暫存.txt 與截圖 工作日誌回報\2026-08-03_Daily\picture1.png / picture2.png）：
+1. Repo 準備：git clone David 的 internship repo（HTTPS，需登入 GitHub 帳密）、git checkout 2026-TEEP-2-JDavid；套用步驟 1 已知的 metric 修正（用 scaph_domain_power_microwatts 的 core+uncore 加總取代不存在的 scaph_host_power_microwatts，修正版腳本見 TEEP_David資料\步驟2\步驟2_run_week4_gap_run_fixed.sh）。
+2. 量測執行：Scaphandre 因 Ubuntu 重開機需 docker start 重啟；run_week4_gap_run.sh 自動偵測連線速率對 TARGET_HOST=localhost 失效（ip route get localhost 查不到 loopback 路由），改明確帶入 TARGET_L=200M TARGET_M=500M TARGET_H=900M 繞開；第一次正式跑（sweep-01）誤觸 Ctrl+C 中斷，重開 OUTPUT_DIR=runs/2026-08-03/sweep-02 完整跑完 3 輪 × 3 個 Load 等級（約 36 分鐘），iperf3 全程 900Mbit/s、0% loss。
+3. 出圖與統計：analyze_week3_data.py 產出 power_timeline.png、power_linearity_boxplot.png、stats_summary.md。結果：Idle 0.248W（CV 208.6%）、Load-L 0.990W（CV 109.5%）、Load-M 0.729W（CV 11.0%）、Load-H 1.189W（CV 131.2%）。
+4. QC gate 結果：未通過。比 FinalReport 參考數量級（Idle ~5.7W → Load-H ~26.9W）低了一個數量級以上，且多數 state 的 CV 過高（Load-M 例外）。iperf3 流量端本身完全正常，問題確定集中在功耗量測端。
+5. 診斷（與 AI 討論的共同結論）：(a) 這次只讀到 core/uncore 兩個 RAPL domain，沒有 dram，加總只是 CPU package power 不是完整 Platform Power，但這頂多讓數字系統性偏低幾瓦，不足以解釋整個數量級落差；(b) 較可能主因是 scaph_domain_power_microwatts 屬瞬時取樣，跟外部每 10 秒一次的 curl 輪詢沒對齊，加上 RAPL energy counter 偶爾 wraparound，導致抓到異常尖峰（如同一 10 秒窗口從 0.09W 跳到 10W）而非穩定區間平均。
+6. 決定（2026-08-03）：這個階段不追查/修正這個數據落差——量測管線本身（repo → Scaphandre → iperf3 → sweep script → 分析腳本 → 出圖）已確認可完整重複執行，視為步驟 2「最短路徑重現」的目標已達成；數據精度問題列為無時間壓力的 pending 項目。
+7. 已知 pending 項目：
+   a. Richard 本人尚未親自逐字讀過 01_Methodology_Reproducible_Measurement.md 與 03_Standard_Operating_Procedure.md 原文，目前是依 AI 轉譯的步驟2_TrackA重現指南.md 直接動手執行——待有空親自讀過確認一致。
+   b. 數據量級/CV 異常的改善（例如改讀累積能量計數器 scaph_socket_rapl_mmio_energy_microjoules 自算 Δenergy/Δtime）留待有餘力、或問過 David 當初怎麼避開雜訊問題後再處理。
 
-這一步做完，Richard 就有了一個完全自己重現、有 QC 依據的最小可行結果（MRR-equivalent）。
+詳細逐指令記錄與診斷全文見 TEEP_David資料\步驟2\步驟2_TrackA重現指南.md §6 與 工作日誌回報\2026-08-03_Daily\2026-08-03_Daily-Note.md。
 
 ===============================================================
 步驟 3（可選加碼）：srsRAN ZMQ 全堆疊代理實驗 — 尚未開始，非必要
@@ -75,13 +81,23 @@ Track A 的功耗量測依賴 /sys/class/powercap（Intel RAPL），WSL2 通常�
 5. docs/StudyNotes/2026-05-01_NVIDIA-cuMAC-GPU-Accelerated-Scheduling.md — 放最後讀，David 自己註記這是 close-source 且與 OAI 架構不相容，優先度較低。
 6. ocloud-telemetry-agent 的 docs/architecture.md、tests/test_correctness.py（量測正確性規則，如 RAPL wraparound、stale counter 偵測）——當「怎麼做對功耗量測」的方法論參考，不需要真的跑起來（跑不動，缺硬體）。
 
+新增（2026-08-04，需校內網路才能下載，今日於學校下載到本地，存於 TEEP_David資料/）：基地台/基站功耗模型與蜂巢式網路能效相關的 IEEE 論文，補強步驟 2 的 Track A 功耗量測與步驟 6 Track B 的理論背景：
+7. TEEP_David資料\How_much_energy_is_needed_to_run_a_wireless_network.pdf — 基地台功耗建模的基礎背景文獻，適合接續第 1-2 點的頻域/排程背景之後、進入功耗主題前先讀。
+8. TEEP_David資料\A_Parameterized_Base_Station_Power_Model.pdf — 與第 7 點同系列，提出參數化基地台功耗模型，直接對應步驟 2 Track A 用 RAPL 量測 CPU 功耗當 RU 功耗代理的方法論基礎，可用來檢視目前量測數量級落差（見步驟 2 pending 項目 7b）是否有模型面的參照點。
+9. TEEP_David資料\Energy_Efficiency_Improvements_through_Micro_Sites_in_Cellular_Mobile_Radio_Networks.pdf — 探討以 micro site 部署改善蜂巢式行動網路能效，可作為小基站節能策略的背景對照。
+10. TEEP_David資料\Deploying_Dense_Networks_for_Maximal_Energy_Efficiency_Small_Cells_Meet_Massive_MIMO.pdf — 探討小基站與 massive MIMO 部署下的能效極大化，建議放在第 7-9 點基地台功耗建模讀完後再讀，屬於較進階的網路層級能效優化主題。
+
+新增（2026-08-05，工作方式決定）：從這天起，背景知識研讀改用「跟 Claude Code 對話帶讀 + 把討論整理進筆記檔」的方式進行，取代單純自己啃原文。筆記累積存在 TEEP_David資料\筆記.txt（含 O-RAN 架構、術語解釋、逐篇帶讀內容、Richard 提出的疑問與回答），會持續累加更新，作為步驟4「軟性產出證據」。
+- 筆記.txt 的定位已明確限定：目的是幫 Richard 追上 David 的知識/研究進度，準備好在 David 回國（暫存.txt 提及 8/20 前後）離開前，把分工、架構、術語上的疑問一次問清楚——不是拿來診斷或提出步驟2那個數量級落差(pending 項目 7b)的解決方案/根本原因。步驟2的異常診斷仍留在步驟2自己的 pending 項目與本文件「待與 David / Prof. Ray 討論的開放問題」清單裡處理，兩者不要混在一起寫。
+- 2026-08-05 討論已釐清一個重要分工誤解：Tobby 的 ES rApp（Non-RT RIC、cell 整顆開關、慢速 300 秒決策）跟 Richard/David 的排程器題目（O-DU MAC 層、slot 內 PRB 分配、快速 0.5ms 決策）是兩個不同時間尺度/粒度的獨立控制迴圈，不是同一條 pipeline 的上下游——詳見筆記.txt「問題4」的回答。是否要把排程策略本身也做成可被 RIC 動態調整的 App，尚未確認，已列入要問 David/教授的問題。
+
 ===============================================================
 步驟 5：用 C-verification-report.md 記錄重現過程（非強制，但建議）— 尚未開始
 ===============================================================
 依 CLAUDE.md 既有共識，Open-Research-Playbook/templates/C-verification-report.md 的結構（確認理解 → 重現 MRR → 提出後續工作）剛好對應 Richard 現在在做的事，可以當非正式的個人查核表，把步驟 2-3 的重現結果、QC 是否通過、遇到的落差都記下來——這份文件同時也是將來跟 David / Prof. Ray 討論銜接 Track B 時最好用的溝通素材。
 
 ===============================================================
-步驟 6：Track B（真實 WINLAB 測試床）— 銜接路徑，非現階段執行項
+步驟 6：Track B（真實 WINLAB 測試床）— 下一個主線任務（2026-08-04 決定開始銜接）
 ===============================================================
 不假設存取時程，僅記錄下次有存取權限時該從哪裡接手：
 
@@ -95,9 +111,10 @@ Track A 的功耗量測依賴 /sys/class/powercap（Intel RAPL），WSL2 通常�
 1. Track B 尚未完成的 baseline vs. 排程器 A/B 對照，是否就是 Richard 銜接後的第一個具體任務？
 2. WINLAB 實體測試床的申請流程與時程。
 3. Liu.pdf 已確認當背景知識即可，不強求找替代論文——但若之後 Prof. Ray 主動提到另一篇「Liu」的功耗論文，需要重新檢視。
+4.（2026-08-03 新增）向 David 詢問他當初的 Track A 量測是怎麼避開 Scaphandre 瞬時取樣／RAPL counter wraparound 造成的雜訊尖峰問題（例如是否等穩定後才取樣、或改用累積能量計數器算 Δenergy/Δtime）——步驟 2 的 QC 數量級落差診斷指向這個方向，但尚未證實，需要跟 David 對照他的實際做法。可以在銜接步驟 6、找 David 討論 Track B 交接時一併問。
 
 ===============================================================
 驗證方式
 ===============================================================
-- 步驟 2 完成的判準：analyze_week3_data.py 產出的時序圖與 FinalReport 既有結果（Idle ~5-6W, Load ~20-27W）數量級相符，且 QC checklist（markers 完整、Idle/Load 有明顯區隔、無感測器 dropout）全部通過。
+- 步驟 2 完成的判準：analyze_week3_data.py 產出的時序圖與 FinalReport 既有結果（Idle ~5-6W, Load ~20-27W）數量級相符，且 QC checklist（markers 完整、Idle/Load 有明顯區隔、無感測器 dropout）全部通過。實際執行結果（2026-08-03）：「管線可完整重複執行」的判準已達成，但數量級/CV 判準未過（Idle 0.248W、Load-H 1.189W，比參考值低一個數量級以上，多數 state CV 過高）——已決定將此落差列為 pending，不視為卡住步驟 2「最短路徑重現」目標的完成。
 - 步驟 5 的 verification report 完成後，可視為這個階段的產出物，作為之後跟 David 討論銜接 Track B 的依據。

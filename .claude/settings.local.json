@@ -10,7 +10,14 @@
       "Bash(powershell -Command \"New-Item -ItemType Directory -Force -Path 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報\\\\2026-08-03_Daily' | Out-Null; Move-Item -Path 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報\\\\2026-08-02_Daily\\\\2026-08-02_Daily-Note.md' -Destination 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報\\\\2026-08-03_Daily\\\\2026-08-03_Daily-Note.md'; Remove-Item -Path 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報\\\\2026-08-02_Daily' -Force; Get-ChildItem -Force 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\工作日誌回報\\\\2026-08-03_Daily'\")",
       "Bash(powershell -Command \"Get-ChildItem -Force -Recurse 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題' -Depth 3 | Select-Object FullName\")",
       "Bash(powershell -Command \"Get-ChildItem -Force 'C:\\\\Users\\\\徐銘亨\\\\Desktop\\\\大三下\\\\專題\\\\.claude'\")",
-      "Bash(grep -n \"claude_plan\\\\|步驟2\\\\\\\\\\\\\\\\\" \"/c/Users/徐銘亨/Desktop/大三下/專題/工作日誌回報/2026-08-03_Daily/2026-08-03_Daily-Note.md\")"
+      "Bash(grep -n \"claude_plan\\\\|步驟2\\\\\\\\\\\\\\\\\" \"/c/Users/徐銘亨/Desktop/大三下/專題/工作日誌回報/2026-08-03_Daily/2026-08-03_Daily-Note.md\")",
+      "WebFetch(domain:docs.o-ran-sc.org)",
+      "Read(//c/Users/徐銘亨/.claude/**)",
+      "Read(//c/Users/徐銘亨/.claude/plugins/**)",
+      "Read(//c/Users/徐銘亨/.local/**)",
+      "Bash(python3 -c ' *)",
+      "Read(//d/npm-global/**)",
+      "Read(//d/npm-global/node_modules/@anthropic-ai/**)"
     ]
   }
 }

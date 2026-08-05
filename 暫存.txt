@@ -96,7 +96,7 @@ ES rapp、ES xapp
 
 了解此meeting能知道SOP，以及實驗室的架構
 1. 想問比對系統呢？時時確保自己的成果是OK的
-2. 想問QoS的那個課程，大四學長有修嗎? 還是說指給碩? 很硬嗎?
+2. 想問QoS的那個課程，大四學長有修嗎? 還是說只給碩? 很硬嗎?
 09:10 – Ian 在介紹 leaving-procedure
 09:18 – Clone SOP 到自己的 git，會一對一檢查。有流程圖再去檢查
 09:30 – Ian 要補4個LLM的記憶，在leaving-procedure 的5.12
@@ -118,9 +118,47 @@ https://www.linkedin.com/posts/nitingupta639_how-do-100-users-share-one-5g-cell-
 
 0803
 預計進行
-1、跟 David 討論 0803 note
-2、跟 Ray 討論 clone 後連結問題
-3、跟 Ray 討論分數方案確定是 plan B?
-4、跟
+1、跟 David 討論 0803_note   ---> 0807 處理
+2、跟 Ray 討論 clone 後連結問題 ---> 軟性議題，考慮到著作權
+3、跟 Ray 討論分數方案確定是 plan B? ---> 0806 會議處理
+4、確認 Gu 的課程時間沒有撞到 ---> 0806 早上處理，下午會議確定
+5、把自己的資料庫融入實驗室  ---> 不急，或是問 Finn 能找誰求助
+6、Teams 會議錄影的教學 ---> 0804 Kuan 已經在群組解決
+7、承接0728的問題，想問有沒有比對系統，時時確保成果是OK的
+8、修課問題確認，0804 私下找教授，除了搞定 Gu 短期課程以外，還確認大群的修課建議是針對碩一，大學專題生先以能畢業為主，由餘力再修研究所的課
+9、0805，Ray 直接 LINE 私訊說，拿 David 的簡報拿來學習是最快的，並且 David 回去後，把題目拿來投大專生企劃 (預計)
+10、找時間跟 Chynna 聊一下，但不曉得目的為何。Ming 也可以聊一下，目的在於拿到 OAI 的知識，是 David 推薦的。
+11、teams 的線上會議都沒有錄到聲音，是否要處理?
+12、關於問 David 的進程問題，要去 "C:\Users\徐銘亨\Desktop\大三下\專題\TEEP_David資料\筆記.txt"" 裡面整理，以及 plan_建議.txt 裡面的 "待與 David / Prof. Ray 討論的開放問題（不要自行假設）"
+13、閱讀 plan_建議.txt 裡面的 步驟 4：背景知識研讀（與步驟 2-3 平行進行，自訂步調）— 可隨時開始，軟性證明在 "C:\Users\徐銘亨\Desktop\大三下\專題\TEEP_David資料\筆記.txt"
+14、生成0806下午的報告。還沒開始做
+15、處理 Terminal 格式跑掉的問題，確定以後都用黑底白圖">_"的終端機 ---> 確定完畢，但還有 claude code 自動更新的問題，不過不影響呼叫 claude code 做專題，之後再處理
+16、額外補充0805隨筆紀錄的事情，因為現在是0806回顧
+A、得到教授的授權，處理 Gu教授短期課程 的選課學生撞堂問題。在 8/6 11:00 以前統計完撞堂結果， 8/6 14:00 開會時確定。 8/7 跟 Gu 回報時間，並建議調整日期。證據：我說的算，出事 Ray 會親自監督，Ray 沒有發聲就代表 OK。處理訊息 + 確認我能處理 + 建立 excel 表單，總共花費 4 小時，涵蓋精神成本。對應開學後的課表，算是短期任務。與此相關的，是到辦公室問 Ray 課表的建議，關於日後實習，Ray 因為這幾天要去新加坡，這段對話不到 5 分鐘的 small talk，未詳細討論，只講大概。
+
+B、與 David 巧遇於學餐，時間 8/4 18:00 - 18:30。討論到步驟2，也就是我的Track_A 會只有CPU 而沒有 DRAM，相對於 David 的數據而言。是因為David用Windows的虛擬機來跑，我用 Ubuntu，可能是原因嗎(我不確定)。8/6早上，我會去參加 David 在 0806早上的 Weekly meeting，以確保我知道他在幹嘛
+
+C、下載 IEEE 論文，因為只有在學校網路才可以下載，其它地方要付費，掛實驗室 VPN 也是。下載好後，把待讀文獻更新到 plan 上面去了
+
+D、Terminal 的錯誤，排版問題依舊存在，花了 1 小時試圖處理，比較其它使用 claude code 的人的方式，問題是由 Windows 家用版 所導致的原因提高到 90%。一般使用時，都不需要系統管理員權限就能呼叫，但我這裡需要，不過能用就好，不打算處理
+
+
+
+
+
+
+
+0805
+Term	Meaning
+SMO	Service Management and Orchestration — the O-RAN management platform hosting the Non-RT RIC
+Non-RT / Near-RT RIC	RAN Intelligent Controllers: Non-RT (in the SMO, ≥1 s control loop, hosts rApps) and Near-RT (10 ms–1 s loop, hosts xApps)
+rApp / xApp	Applications on the Non-RT RIC (rApp) / Near-RT RIC (xApp) — the most common project type in this lab
+O1 / A1 / E2 / R1	O-RAN standard interfaces: O1 = management (NETCONF/VES), A1 = policy to Near-RT RIC, E2 = Near-RT RIC ↔ RAN nodes, R1 = rApp ↔ Non-RT RIC services
+ICS / SME	R1 building blocks: Information Coordination Service (data exchange) and Service Management & Exposure (API discovery)
+KPM / KPI	Key Performance Measurement (E2 service model) / Indicator — the metrics your rApp consumes
+O-DU / O-CU / gNB	O-RAN Distributed / Central Unit — the disaggregated 5G base station (gNB) components
+TA rApp	BMW Lab Test Automation rApp — owns all simulator lifecycle (your rApp never calls simulator APIs directly)
+MRR	Minimum Reproducible Result — the defense-slide results the incoming student must reproduce before handover is accepted
+LTM / termlog	The lab's long-term memory (per-user PostgreSQL) and terminal-command log — the data your daily-log durations come from
 
 
