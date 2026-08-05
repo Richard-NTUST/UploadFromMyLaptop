@@ -77,7 +77,7 @@
 
 ## Overall Assessment
 
-Ready for next-day planning（初次審查後已修訂）。初次審查發現的四項 Required Revisions 已全數處理：主題二 #1 補上明確狀態、圖片6 已轉為連結、Next Working Day Plan 已依當日簡報建立、主題四 #1／#2 已補上暫定產出定義。仍有兩項屬 AI 本身能力限制的不可解事項，列於下方供你知悉，非需再修訂的缺失。
+Ready for next-day planning（初次審查後已修訂）。初次審查發現的四項 Required Revisions 已全數處理：主題二 #1 補上明確狀態、圖片6 已轉為連結、Next Working Day Plan 已依當日簡報建立、主題四 #1／#2 已補上暫定產出定義。仍有兩項屬 AI 本身能力限制的不可解事項，列於下方供你知悉，非需再修訂的缺失。 ---> 圖片6在文字區域，所以無法建立連結，這是 markdown 語法的限制，但問題不大
 
 ## Missing or Unverified Evidence
 
