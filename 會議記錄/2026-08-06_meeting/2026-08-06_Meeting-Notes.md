@@ -11,8 +11,8 @@
 |Item|Description|
 |-|-|
 |Date|2026/08/06（Teams 會議，14:00 開始，結束時間16:10）|
-|Meeting Link|https://teams.microsoft.com/meet/493048783952645?p=41xfulLkhylevvEa2a（此後固定使用此連結，跟 "C:\Users\徐銘亨\Desktop\大三下\專題\會議記錄\2026-07-30_meeting\2026-07-30_Meeting-Notes.md"的不同，日後都以此為準，此連結由 Kuan 維護）|
-|Ray（指導教授）、Gu（共同指導教授）、大四生 2 位（Kevin／承諭、Kuan／亭寬）、大三生 4 位：Richard／徐銘亨、Finn／黃仁廷、KY Li／光胤、Huang_Ray/黃育睿、碩一生羅文均(Lucy)
+|Meeting Link|[Teams 固定會議連結](https://teams.microsoft.com/meet/493048783952645?p=41xfulLkhylevvEa2a)（此後固定使用此連結，由 Kuan 維護；跟 [2026-07-30_Meeting-Notes.md](../2026-07-30_meeting/2026-07-30_Meeting-Notes.md) 附的舊連結不同，日後都以此為準）|
+|Participants|Ray（指導教授）、Gu（共同指導教授）、大四生 2 位（Kevin／承諭、Kuan／亭寬）、大三生 4 位：Richard／徐銘亨、Finn／黃仁廷、KY Li／光胤、Huang_Ray/黃育睿、碩一生羅文均(Lucy)|
 |Topic|第二次 Weekly Meeting——上次會議事項覆盤、Gu 教授短期課程排課與選課人數處理、git clone 著作權標示與連結實驗室 GitHub、比對系統與評分規則討論、專題初稿單期程確認|
 
 ---
