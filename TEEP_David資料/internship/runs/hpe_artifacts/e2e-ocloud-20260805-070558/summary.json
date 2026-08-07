@@ -1,0 +1,33 @@
+{
+  "artifact_dir": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260805-070558",
+  "copied_ocloud_logs": "",
+  "e2e_returncode": 1,
+  "finished_utc": "2026-08-05T07:13:08.581680Z",
+  "iapc_host": "iapc",
+  "iapc_port": 24,
+  "iperf_completion_ratio": 0.65333461,
+  "iperf_csv": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260805-070558/iperf_timeseries.csv",
+  "iperf_expected_seconds": 600,
+  "iperf_observed_seconds": 392.000766,
+  "iperf_plot": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260805-070558/iperf_throughput.png",
+  "iperf_source": "ue_json",
+  "iperf_text_samples": 394,
+  "iperf_validation_errors": [
+    "UE iPerf error: the server has terminated",
+    "iPerf duration below minimum: 392.0s observed, 480.0s required"
+  ],
+  "iperf_validation_warnings": [],
+  "ming_folder": "",
+  "ming_folder_abs": "",
+  "mode": "ocloud",
+  "ocloud_log_dir": "",
+  "offered_load_csv": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260805-070558/offered_load_throughput.csv",
+  "offered_load_plot": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260805-070558/offered_load_throughput.png",
+  "postprocess_steps": [],
+  "returncode": 1,
+  "started_utc": "2026-08-05T07:05:58.847231Z",
+  "target_identity": "hpe-pegatron-ru-o",
+  "ue_iperf_json": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260805-070558/iperf-UE-RX.log",
+  "ue_iperf_samples": 393,
+  "ue_serial": "R5CN30TMBYR"
+}

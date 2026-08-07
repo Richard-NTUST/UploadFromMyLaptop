@@ -4,12 +4,17 @@
 ===============================================================
 目前進度總覽
 ===============================================================
-狀態：規劃階段已完成並核准；步驟 1（環境建置）已完成並有實際證據確認（2026-08-01）；步驟 2（Track A 重現）已完成「管線重現」目標，但 QC 數量級未通過（2026-08-03，有實際證據確認，詳見下方步驟 2 區塊）。下一步已決定（2026-08-04）：QC 數量級落差維持列為 pending、不現在排查；下一個主線任務是步驟 6（銜接 Track B、跟上 David 目前實際進度）。
+狀態：規劃階段已完成並核准；步驟 1（環境建置）已完成並有實際證據確認（2026-08-01）；步驟 2（Track A 重現）已完成「管線重現」目標，但 QC 數量級未通過（2026-08-03，有實際證據確認，詳見下方步驟 2 區塊）。步驟 6（Track B）的存取障礙已於 2026-08-06 解除，目前主線任務是銜接 Track B；Ray 指示（2026-08-06）以 David 最新週報 slides（2026-08-05 發表）內容為現階段最優先參考進度，詳見下方步驟 6 區塊。
 - 已完成：三份素材（internship repo、ocloud-telemetry-agent repo、Liu.pdf）已由 AI 探索並整理重點，關鍵落差已與 Richard 確認（見下方 Context）。
 - 已完成（2026-07-31）：讀取本機硬體規格（唯讀，PowerShell），確認 CPU 為 Intel i7-12700H（支援 RAPL），且 C:/D: 是兩顆不同實體硬碟——C:（系統碟）僅 72GB 可用，D:（資料碟）有 599GB 可用。已決定 Ubuntu 整個裝在 D: 那顆硬碟，完全不動 C: 系統碟，降低風險。詳細安裝步驟已寫成獨立指南：TEEP_David資料\步驟1_Ubuntu雙系統建置指南.md。
 - 已完成（2026-08-01，有實際證據確認，含截圖 步驟1.jpg）：Ubuntu 26.04 LTS 已裝在 Disk 1（D:），Disk 0（C:）完全未動；雙系統開機正常（BIOS(F2) 手動切換）；RAPL 驗證通過（/sys/class/powercap/ 節點齊全，energy_uj 讀取正常，不需 modprobe）；Track A 軟體鏈（iperf3、pandas/matplotlib/seaborn、Docker 29.1.3、Scaphandre 容器）全部裝妥並驗證，curl localhost:8080/metrics 讀到真實非零數據（scaph_domain_power_microwatts、scaph_socket_rapl_mmio_energy_microjoules）。詳細證據見下方「步驟 1」區塊。已知落差：此版本 Scaphandre 沒有 scaph_host_power_microwatts 這個 metric，寫步驟 2 分析腳本時要改用 scaph_domain_power_microwatts 加總。
 - 已完成（2026-08-03，有實際證據確認，含逐指令記錄 TEEP_David資料\步驟2\暫存.txt 與截圖 工作日誌回報\2026-08-03_Daily\picture1.png/picture2.png）：Track A 完整量測管線（repo clone → metric 修正 → Scaphandre + iperf3 → run_week4_gap_run.sh sweep → analyze_week3_data.py 出圖）已確認可完整重複執行，產出 markers.csv/power_uw.txt/power_timeline.png/power_linearity_boxplot.png/stats_summary.md。但 QC 數量級未過：Idle 0.248W／Load-H 1.189W，比 FinalReport 參考值（Idle ~5.7W→Load-H ~26.9W）低了一個數量級以上，且多數 state 的 CV（變異係數）過高（Load-M 例外，11%），iperf3 流量端本身完全正常（900Mbit/s、0% loss）。診斷判斷問題出在功耗量測端的取樣時間粒度／RAPL counter wraparound 造成雜訊尖峰，而非真正功耗變化。決定：此數據精度落差暫列 pending，不卡進度。詳細見下方「步驟 2」區塊。
-- 下一步已決定（2026-08-04）：QC 數量級落差（步驟 2 pending 項目 7b）先擱置，不現在花時間排查；下一個要走的主線是步驟 6（銜接 Track B、跟上 David 目前實際進度）。步驟 4（背景知識研讀）維持「可隨時平行進行」的原定位，未特別排優先序。
+- 已完成（2026-08-04）：新增 4 篇 IEEE 背景論文到步驟 4（先前受限於 IEEE 論文下載需校內網路，8/4 到校下載），詳見下方步驟 4 區塊。
+- 已完成（2026-08-06）：WINLAB 測試床存取鏈（WireGuard VPN → SSH hpe@192.168.8.26 → SSH super 跳 Lavoisier）全部打通，hpe 帳號密碼已由 David 提供（僅記在 Richard 私人筆記，未寫入任何檔案）；設備獨佔排班問題意外解除（原本會搶時段的 Ming 學長已畢業，目前僅 David 一人使用，Richard 無競爭對手）。過程詳見 TEEP_David資料\筆記.txt（2026-08-06 各節）。步驟 6「非現階段執行項」狀態正式解除。
+- 最新指示（2026-08-06，Ray）：以 David 最新週報 slides（TEEP_David資料\(FIXED) 2026-08-05_JesayaDavid_Weekly-Presentation.pptx）內容為目前最優先參考進度——內容顯示 David 已完成 900Mbps 下 27/54/104-PRB 與 OAI latest 的初步 A/B 對照（詳見下方步驟 6 區塊），比 7/30 週報記錄的進度更新，開放問題清單需要跟著更新。
+- 已完成（2026-08-08）：Richard 重新 clone David 的 internship repo，取得比 8/5 slides 更完整的原始文件，其中 docs/StudyNotes/2026-08-03_...Session_Handoff.md 是 David 親自寫的接手交接 SOP，內含完整實驗矩陣、架構、故障診斷樹與操作規則。Richard 正式決定接手 Track B，採「先重現（照 Session Handoff §16 矩陣做 baseline/27/54/106-PRB @ 500Mbps 對照）→ 補原理（搭配步驟 4 已讀過的 OAI 排程器背景）→ 加深加廣（待①②完成後再定）」三階段策略。詳見下方步驟 6 區塊，開放問題第 1 點已同步關閉。
+- 已完成（2026-08-08）：把 Session Handoff §8-18 整理成可直接照做的執行步驟清單，存於 TEEP_David資料\步驟6\執行步驟_實驗矩陣_baseline-27-54-106PRB.md（步驟 0-11，涵蓋 preflight、切換排程器 image、pod 重啟順序、跑 E2E、驗收規則、故障排除、功耗匯出合併、每輪應記錄欄位、全程紅線）。指令細節刻意沒寫死，供 Richard 連同本檔案一起交給另一顆 LLM 補執行細節。
+- 下一步：QC 數量級落差（步驟 2 pending 項目 7b）維持擱置，不現在花時間排查；主線任務是步驟 6 三階段的「①先重現」——依照 TEEP_David資料\步驟6\執行步驟_實驗矩陣_baseline-27-54-106PRB.md 執行 Session Handoff §16 的 baseline/27/54/106-PRB @ 500Mbps 實驗矩陣。步驟 4（背景知識研讀）維持「可隨時平行進行」的原定位，並作為「②補原理」階段的素材。
 
 ===============================================================
 Context（為什麼要做這個、關鍵發現）
@@ -97,21 +102,72 @@ Track A 的功耗量測依賴 /sys/class/powercap（Intel RAPL），WSL2 通常�
 依 CLAUDE.md 既有共識，Open-Research-Playbook/templates/C-verification-report.md 的結構（確認理解 → 重現 MRR → 提出後續工作）剛好對應 Richard 現在在做的事，可以當非正式的個人查核表，把步驟 2-3 的重現結果、QC 是否通過、遇到的落差都記下來——這份文件同時也是將來跟 David / Prof. Ray 討論銜接 Track B 時最好用的溝通素材。
 
 ===============================================================
-步驟 6：Track B（真實 WINLAB 測試床）— 下一個主線任務（2026-08-04 決定開始銜接）
+步驟 6：Track B（真實 WINLAB 測試床）— Richard 已正式接手（2026-08-08），採「先重現→補原理→加深加廣」三階段
 ===============================================================
-不假設存取時程，僅記錄下次有存取權限時該從哪裡接手：
+WINLAB 名詞澄清：不是連到美國 Rutgers 大學的 WINLAB，是 BMW Lab 借用 Rutgers WINLAB 的 POET 論文量測方法論（PDU+IPMI+Scaphandre/Kepler → Prometheus/Grafana）與名稱，用來稱呼自己這套「量 Pegatron RU 功耗」的實體測試床。詳見 TEEP_David資料\筆記.txt 2026-08-06 節。
 
-- 直接切入點：docs/DailyNotes/2026-07-30_Daily-Note.md + docs/StudyNotes/2026-07-30_27-PRB_Live_Validation_Power_Merge_and_Run_QC.md + 2026-07-30_WINLAB_Weekly_Progress_Summary.md — David 留下的「下一步實驗清單」本質上就是待接手任務：做出一組同條件的 baseline vs. 27-PRB-capped 排程器 A/B 功耗對照，目前完全沒人做出來過。
-- 已知的環境脆弱點（供未來排雷用）：PNF runtime 未進 git、UE iperf 長時間跑會 idle-timeout 提早中斷、Lavoisier BMC 重開機後需手動跑 setup_network.sh + 重啟 kubelet、共用實驗室常被別人改設定。
-- 自動化三劍客：scripts/run_week4_gap_run.sh（Track A 用）、scripts/merge_winlab_e2e_power.py（Track B 流量↔PDU功耗對齊）、docs/Deployment/winlab_e2e_rapp_docker/（可直接部署到 HPE 機器的 rApp Docker bundle）。
+存取狀態（2026-08-06 已解決，問題清單原第 2/4/7 點可關閉）：
+- 存取鏈：WireGuard VPN（BMW Lab 內網，非 Rutgers）→ SSH hpe@192.168.8.26（HPE ProLiant DL380 Gen10，Ubuntu，共用帳號）→ 該伺服器內執行 ssh super 二次跳到 Lavoisier（192.168.8.82，真正驅動 Pegatron RU 的機器）。
+- VPN 設定檔一開始連不上（Address 用 10.1.0.76/24 且未被 HPE SSH 白名單放行），比對 David 自己的設定檔（10.1.0.106/32 固定位址）調整後打通，改完後 ssh hpe@192.168.8.26 開始正常跳出密碼提示。
+- hpe 帳號密碼已由 David 當面提供並拿到手（只記在 Richard 私人筆記，未寫入任何會被 git 追蹤或外流的檔案）。
+- 設備獨佔排班問題意外解除：這套實體 UE/RU 設備一次只能一人用，原本會跟 Richard 搶時段的 Ming 學長已畢業，目前僅 David 一人在用，Richard 沒有排隊/協調的對手。
+
+repo 更新（2026-08-08，Richard 重新 clone David 的 internship repo）：新增多篇 docs/StudyNotes（7/31~8/5）與 docs/DailyNotes（7/30、7/31），內容比 8/5 週報 slides 更完整、更精確，之後以這批原始文件為主要依據，slides 只當摘要版看。其中最關鍵的一份是 David 親自寫給下一個接手者（也就是現在的 Richard）的完整交接文件，等同 Track B 的官方 SOP：
+internship/docs/StudyNotes/2026-08-03_WINLAB_OAI_Scheduler_Experiment_Session_Handoff.md
+內容涵蓋：研究問題與控制變因定義、VNF（排程器所在）vs PNF（硬體驅動 runtime）的關鍵架構區分（兩者不是同一份 image，改 VNF 不代表 PNF 也跟著改）、目前已證實/未證實的科學結論清單、完整的固定實驗室識別碼表（HPE/Lavoisier/UE/RU 等連線資訊，不含密碼）、排程器原始碼位置與 27-PRB cap 的確切修改內容、PNF 相容性 patch 說明、開機前檢查清單、Pod 重啟順序、常見故障診斷樹、E2E 實驗 API 呼叫方式、功耗匯出與合併方法、下一個建議實驗矩陣（見下）、以及「避免重複踩雷的規則」。之後接手動手做實驗前，應該先完整讀過這份文件，而不是只看 plan_建議.txt 這裡的摘要。
+
+David 最新進度（精確數據，取代先前僅從 8/5 slides 摘要的版本，改依 repo 原始 StudyNotes 為準——slides 版本數字有省略/簡化，這裡是完整表格）：
+- 題目正式標題：「OAI Scheduler Allocation vs. O-RU Power Consumption」，範圍限定 WINLAB/O-Cloud、單一 UE（Samsung UE R5CN30TMBYR + Pegatron O-RU + PDU Outlet 2 + InfluxDB）。
+- 實驗管線：Git/OAI source → Jenkins build → Quay → Kubernetes VNF（內含被測 OAI MAC scheduler container image，namespace ming-ns）+ 獨立的 PNF worker worker-mounted runtime（在 Lavoisier 上）→ O-RAN FHI 7.2 fronthaul（SR-IOV+VFIO）→ Pegatron O-RU / Samsung UE 跑 iPerf/Open5GS（經 nFAPI P5/P7 RF）→ PDU Raritan Outlet 2 讀功耗（InfluxDB bucket cortexdc_pdu）→ 時間對齊 merge → 出圖。排程器實際修改點：openair2/LAYER2/NR_MAC_gNB/gNB_scheduler_dlsch_default_policies.c 裡的 nr_dl_proportional_fair()。
+
+【表格 1】900Mbps offered load 下，PRB-cap 四組完整比較（同一 image base、循序單次跑，屬不同 image lineage，只能算描述性證據，還不是因果功耗模型）：
+  27 PRB  ：Delivered 95.601 Mbps ｜ 平均功耗 40.952 W ｜ 428.36 nJ/bit
+  54 PRB  ：Delivered 191.585 Mbps ｜ 平均功耗 41.258 W ｜ 215.35 nJ/bit
+  104 PRB ：Delivered 362.052 Mbps ｜ 平均功耗 41.536 W ｜ 114.72 nJ/bit
+  OAI latest（無 cap）：Delivered 760.715 Mbps ｜ 平均功耗 41.988 W ｜ 55.20 nJ/bit
+  重點：吞吐量從 27→latest 差了約 8 倍，平均功耗只差約 1W——這是目前最直接支持「排程分配方式能大幅改善能效」假設的證據，但 David 自己強調這四組是不同 image lineage 循序跑出來的，還需要「同一個可切換模式的 base image」才能排除 confounding，這正是 Richard 下方「先重現」階段要接手的方向。
+
+【表格 2】OAI-latest baseline 100-600Mbps load sweep（100/200/400/500 為完整點，300/600 為未完成診斷點）：
+  100 Mbps offered → 100.008 Mbps delivered，100.0%完成，40.594W，405.909 nJ/bit，Complete
+  200 Mbps offered → 200.007 Mbps delivered，100.0%完成，40.992W，204.952 nJ/bit，Complete
+  300 Mbps offered → 299.976 Mbps delivered，76.333%完成，41.020W，136.744 nJ/bit，Incomplete diagnostic
+  400 Mbps offered → 399.498 Mbps delivered，100.0%完成，41.326W，103.445 nJ/bit，Complete
+  500 Mbps offered → 495.066 Mbps delivered，100.0%完成，42.015W，84.867 nJ/bit，Complete
+  600 Mbps offered → 549.112 Mbps delivered，65.333%完成，41.953W，76.402 nJ/bit，Incomplete diagnostic
+  只用 4 個完整點做回歸：P(W) = 40.2752 + 0.0032028 × throughput(Mbps)，R²=0.9246，n=4。700-900Mbps 仍待補（David 自己排定的下一步）。
+
+已知問題與可能原因：高負載階段自動化流程有時會卡住；VNF log 出現「SDU rejected, SDU buffer full」與 RRC re-establishment（cause: Other Failure）；600Mbps 重跑一次只完成 65.333%（549.112 Mbps）；VNF image 只比 OAI 2026.w28 新 13 個 commit（不是版本太舊的問題），PNF worker runtime 則是另一條含本地 PRACH/FHI 修復的獨立 lineage，比 2026.w28 新 153 個 commit；設定上限可跑 4 層 MIMO，但 UE 持續回報 RI=2（rank 2）——這解釋了為何 900Mbps offered load 只跑出 760.715 Mbps，不是排程器的問題。David 判斷：現有證據指向 backpressure／分離路徑的 timing 不穩定，不能只歸因於自訂排程器單一原因。
+
+David 規劃中、尚未執行的下一步「Scheduling Shape」實驗（修改點同樣是 nr_dl_proportional_fair() 的 phase-3 new-data scheduling）：「Narrow Spread」＝每個 slot 固定配額（例如 27 PRB），多個 slot 各分小份；「Wide Burst」＝一個 slot 給一大塊連續配額，其餘 slot 給很少/直接 gated 掉——兩者鎖定「送出的資料量差不多」，只改變分佈形狀，HARQ 等其他部分保持不變，加上 logging。
+
+【David 建議的下一個實驗矩陣（Session Handoff §16——這是「先重現」階段最直接可以接手的具體任務，不需要 Richard 自己另外設計）】：
+固定 UE/RU/頻率/TDD/PDU outlet/驗收規則，只改 VNF 排程器條件，offered load 統一 500Mbps、每輪 20 分鐘、至少重複 2 輪：
+  - Immutable baseline / 273 PRB（無 cap）：控制組
+  - 27-PRB cap：嚴格限制，功能上已驗證過
+  - 54-PRB cap：中間點
+  - 106-PRB cap：較高的中間點
+  目的（David 原話精神）：只有一個 27-PRB 資料點只能證明「嚴格 cap 會降低吞吐量」；要有多個配置等級的資料，才能看出 RU 功耗是「打平的」「階梯式的」還是「跟負載相關的」——這才是教授要的「排程分配 vs 功耗」曲線的起點。
+  每組要記錄：吞吐量均值與分布、Outlet2 功耗均值/最小/最大/變異、每 delivered-Gb 焦耳數、PRB 分配分布與 cap 違規次數、MCS/TBS/HARQ/重傳率、正流量時長與完成率、pod 重啟次數與相關故障訊號。
+
+【工程改善建議（Session Handoff §17，Richard 若要自己動手應優先做的基礎工程）】：用同一個 immutable parent commit build 出 baseline/27/54/106 四種模式（而非各自獨立、會漂移的 image）；優先做一個 runtime 可切換的排程器 image，而非多個獨立 image；排程器 telemetry 寫進專屬、有時間戳、有唯一 run ID 的檔案；每次實驗紀錄都要含精確的 image digest、Helm values、pod UID、重啟次數；加一個 preflight endpoint，node/SR-IOV/pod/cell/UE IP/iPerf 連通性沒過就拒絕開跑；rApp job metadata 落地存檔，不要只存在記憶體；infra 相容性補丁跟排程器策略修改分開 commit。
+
+已知的環境脆弱點與復原步驟（完整版見 Session Handoff §8-10，這裡只記重點）：PNF 跟 VNF 不是同一份 image，不能只換一邊；Lavoisier 重開機或 fronthaul/VF 狀態異常時要跑 setup_network.sh（跑之前必須先把 PNF scale 到 0，該腳本會重建 SR-IOV VF）；常見故障訊號——Ungrouped ULSCH_id/g>=0（PNF grouping 不相容，檢查 pnf-group-fallback.patch）、PRACH segmentation is not supported（RU/FHI 相容性問題）、xran_timingsource_poll_next_tick too long（fronthaul 即時 timing 崩潰）、SIGSEGV 在 host nr-softmodem（worker binary/library 不match，不是 VNF 排程器的問題）、exit 137 且無 OOM/assert（外部干擾，非程式問題）。避免重複踩雷的規則（Session Handoff §18，操作時務必遵守）：動手前先確認自己有預約到 UE/RU；PNF 還在跑的時候不要跑 setup_network.sh；不要每次測試都跑 rrr/pegam（只有 RU 被別人動過才需要）；不要只憑 IP 位址判斷 user-plane 健康、只憑 offered bandwidth 判斷排程器對不對、或只憑 API 狀態判斷科學上有效；不要拿一個不會變動的實驗 image 去跟一直在變的 latest tag 比較；不要只換 nr-softmodem 而不換配套 library；沒有 AMF/NGAP 證據不要因為手機沒 IP 就重啟 Open5GS；deployment controller 在重建 pod 時不要一個一個手動刪，要 scale 整個 deployment；指令輸出/筆記/截圖/對話中絕對不能洩漏 Git 或 Influx 憑證。
+
+自動化工具：scripts/run_week4_gap_run.sh（Track A 用）、scripts/merge_winlab_e2e_power.py（Track B 流量↔PDU 功耗對齊）、scripts/build_winlab_scheduler_playback.py（產生排程器 playback dashboard 資料，2026-08 新增）、scripts/plot_winlab_load_sweep.py（畫 load-sweep 四合一圖，2026-08 新增）、docs/Deployment/winlab_e2e_rapp_docker/（可直接部署到 HPE 機器的 rApp Docker bundle）。
+
+Richard 的三階段接手策略（2026-08-08 決定，取代先前「協助補 baseline 還是加入 Scheduling Shape」的開放問題）：
+① 先重現：直接照 Session Handoff §16 的建議矩陣（baseline/273、27、54、106 PRB @ 500Mbps × 20min × 至少 2 輪）動手做——這是 David 自己規劃好、還沒做完的下一步，Richard 不需要另外設計實驗，直接接手執行即可。具體執行步驟已整理成清單，見 TEEP_David資料\步驟6\執行步驟_實驗矩陣_baseline-27-54-106PRB.md。
+② 補原理：搭配步驟 4 的背景閱讀（尤其已經帶讀過的 OAI-Scheduler-Source-Code-Verified.md，pf_dl()/nr_dl_proportional_fair() 那條線），把①做出來的數字跟原理對起來——理解「為什麼 PRB cap 讓功耗只微幅上升但吞吐量大幅改變」「為什麼有一大塊 load-independent power」這些現象背後的機制，而不是只會重現數字。
+③ 加深加廣：待①②完成後再定。目前候選方向包括 David 規劃中但還沒做的 Scheduling Shape（Narrow Spread vs Wide Burst）實驗，或 srsRAN/OAI 共同尚未實作的坑（例如 Cell DTX，見 筆記.txt）——尚未拍板，待跟 David/Ray 確認方向後再收斂。
 
 ===============================================================
 待與 David / Prof. Ray 討論的開放問題（不要自行假設）
 ===============================================================
-1. Track B 尚未完成的 baseline vs. 排程器 A/B 對照，是否就是 Richard 銜接後的第一個具體任務？
-2. WINLAB 實體測試床的申請流程與時程。
+1.（已由 Richard 自行決定，2026-08-08，不再是開放問題）Track B 接手後的第一個具體任務 = 直接照 Session Handoff（internship/docs/StudyNotes/2026-08-03_...Session_Handoff.md）§16 建議矩陣，重現 baseline/273 vs 27/54/106-PRB @ 500Mbps × 20min × 2 輪的 A/B 對照——這是 David 自己規劃、尚未執行完的下一步，Richard 直接接手執行，不需要再另外跟 David/Ray 確認任務範圍。詳見步驟 6「三階段接手策略」。仍可視情況跟 Ray 確認這個選擇本身是否符合他的期待，但不再是卡住不能動手的開放問題。
+2.（已解決，2026-08-06）WINLAB 實體測試床的申請流程與時程——結論是沒有正式申請表，是靠學長姐帶著走 VPN/SSH 流程 + 口頭跟 David/Ming 要帳密；Richard 已完整打通存取鏈並拿到 hpe 帳號密碼，詳見步驟 6。此項關閉。
 3. Liu.pdf 已確認當背景知識即可，不強求找替代論文——但若之後 Prof. Ray 主動提到另一篇「Liu」的功耗論文，需要重新檢視。
 4.（2026-08-03 新增）向 David 詢問他當初的 Track A 量測是怎麼避開 Scaphandre 瞬時取樣／RAPL counter wraparound 造成的雜訊尖峰問題（例如是否等穩定後才取樣、或改用累積能量計數器算 Δenergy/Δtime）——步驟 2 的 QC 數量級落差診斷指向這個方向，但尚未證實，需要跟 David 對照他的實際做法。可以在銜接步驟 6、找 David 討論 Track B 交接時一併問。
+5.（2026-08-06 新增）更完整、持續累積的問題清單見 TEEP_David資料\筆記.txt 內「該去問 Ray/David 問題清單」（含題目範圍精確定義、與 Tobby ES rApp 的分工釐清、srsRAN/OAI 共同的坑有沒有填、27-PRB cap 原始碼修改方式(A)/(B)/(C)該問 David 哪個是他實際用的等），此處不重複維護細節，避免兩份清單失步。
 
 ===============================================================
 驗證方式

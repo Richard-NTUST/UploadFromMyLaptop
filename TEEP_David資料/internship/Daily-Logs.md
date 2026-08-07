@@ -1126,3 +1126,83 @@ Quick recap for reviewers: [Day 1–Day 2 scope recap](https://github.com/bmw-nt
 	(Status: Complete. Added expected/observed duration, completion ratio, validation warnings/errors, an 80% minimum-duration rule, and failure when no valid iPerf evidence exists.)
 - 16:40-17:00: Exported InfluxDB power data and produced the corrected merged result (Goal 2)
 	(Status: Complete. Corrected the merge window to stop at the final positive-throughput interval. The result was 95.910 Mbps mean RX and 40.129 W mean active power across 18 PDU samples; no energy-saving claim is made without a same-day baseline.)
+
+## 2026/07/31
+**Short-term Goals**
+1. [Build a measured single-UE scheduler playback](https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-07-31_WINLAB_Single-UE_Scheduler_Playback_Visualization.md)
+2. [Repair the PNF/VNF PUSCH-group compatibility failure](https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-07-31_WINLAB_Scheduler_Playback_PNF_Compatibility_and_500Mbps_Validation.md)
+3. Validate the repaired E2E path at 200 Mbps and begin 500 Mbps testing.
+
+**Daily Logs**:
+- 09:00-10:30: Built and reviewed the single-UE scheduler playback (Goal 1)
+	(Status: Complete. Added an offline dashboard that presents measured Samsung UE grants, scheduler fields, throughput, and PDU power from the July 30 27-PRB run. Restricted playback to the dense scheduler capture and kept the complete throughput/power timeline separate because the rotated VNF log is not precisely aligned to iPerf start.)
+- 10:30-12:30: Isolated the deterministic PNF crash during UE random access (Goal 2)
+	(Status: Complete. Traced the abort to `group_pusch_jobs()` in the worker-mounted PNF source. A legacy PUSCH job arrived with negative `mu_group_idx`, causing `Ungrouped ULSCH_id 0`; old executable-only and old-runtime substitutions were rejected as incompatible build/protocol lineages.)
+- 12:30-14:00: Implemented and rebuilt the PNF compatibility fallback (Goal 2)
+	(Status: Complete. Preserved all valid modern PUSCH group indices and assigned only ungrouped jobs to the next unused fallback group. Rebuilt the active worker-side `nr-softmodem`; PRACH then completed without the previous assertion.)
+- 14:00-14:20: Completed direct post-fix E2E smoke validation (Goal 3)
+	(Status: Complete. Job `ab0ad307-3b9c-4697-abbc-cd2b69c4483e` sustained 200 Mbps for 60.001 seconds using UE `10.45.0.3`, transferred 1.40 GBytes, collected 60 UE samples, and reported 0% sender-side packet loss. Both pods remained Ready without additional restarts.)
+- 14:20-15:00: Started higher-load 500 Mbps validation and audited its final status (Goal 3)
+	(Status: Partial. Job `f3b50b65-34ae-4ad8-8a74-23fadc1ee7ef` produced 1,115 positive-throughput seconds of 1,200 requested, or 92.9%, before the UE iPerf client was interrupted. The measurement window is usable and exceeds the 80% minimum, but the job correctly remains failed rather than being reported as a clean 20-minute completion.)
+- 15:00-16:00: Consolidated dashboard, PNF repair, and experiment interpretation (Goals 1-3)
+	(Status: Complete. Added the [July 31 daily note](https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/DailyNotes/2026-07-31_Daily-Note.md) and [technical study note](https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-07-31_WINLAB_Scheduler_Playback_PNF_Compatibility_and_500Mbps_Validation.md). Next reserved window: repeat 500 Mbps cleanly, export matching PDU data, then run same-day baseline and capped comparisons.)
+
+## 2026/08/03
+
+**Short-term Goals**
+1. Restore the Jenkins and Quay services needed to build and distribute the immutable scheduler image.
+2. Recover the RU/VNF data path, verify the exact 54-PRB runtime image, and run the controlled 500 Mbps condition.
+3. [Document the partial 54-PRB result and prepare the immutable 104-PRB source condition](https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-08-03_WINLAB_54-PRB_Recovery_Run_and_104-PRB_Preparation.md).
+
+**Daily Logs**:
+- Morning: Re-established the authoritative experiment context, checked the live HPE preflight state, and verified the 54-PRB source lineage.
+- Afternoon infrastructure gap (approximately two hours): David debugged and restored the computers hosting Jenkins and Quay, which had remained down after the previous day's maintenance. Jenkins build #90 then successfully produced the 54-PRB image.
+- Deployment and recovery: Diagnosed stale nFAPI/RU traffic after the initial install. David uninstalled, ran `rrr` and `pegam`, and reinstalled. The reinstall's unintended `latest` VNF image was caught at preflight, corrected to the immutable 54-PRB tag, and recovered with an ordered restart.
+- Measurement: Confirmed UE IP attachment and started the 500 Mbps, 20-minute 54-PRB job `72eb416c-062b-4c0e-b04c-a3e2f9a98240`. It collected 940 UE samples over 940.000805 seconds (78.3334% UE completeness) at 191.297 Mbps mean delivered throughput, then ended on the rApp idle timeout. Pods remained Ready with zero restarts.
+- Scheduler check: All 3,983 captured grants carried `oai_prb_cap_54`; the nine grants above 54 PRBs were retransmissions, so no captured new-data grant violated the cap.
+- Power alignment: Exported padded Outlet 2 `active_power` data and aligned 16 samples to the authoritative `08:09:29Z`-`08:25:09.000805Z` positive-traffic window. Mean power was 40.18625 W (39.53-40.99 W), yielding 210.072 nJ per delivered bit at 191.297 Mbps. Preserved `pdu_data_20260803_080800_082730.csv` and `power_throughput_summary_20260803_080851.csv`.
+- Follow-up: Prepared and pushed `david/oai-prb-cap-104-20260803` for the reserved post-19:00 run; no Jenkins build or cluster mutation was performed for 104 PRBs.
+
+## 2026/08/04
+
+**Short-term Goals**
+1. Build, deploy, and validate the immutable 104-PRB VNF condition.
+2. Execute and power-align the controlled 500 Mbps run.
+3. Fix expected UE iPerf shutdown handling before the 900 Mbps OAI `latest` condition.
+
+**Daily Logs**:
+- Build and deployment: Jenkins build #92 published commit `d01a1b79ae57def67b8734428f2447f20dafe855` as `david-oai-prb-cap-104-20260803`, digest `sha256:1f1ffe2736e8e0ce91e90db586348d3bc8d42cbe669019a4154b8af58e239a8a`. Corrected a shell-split Helm repository argument before measurement and verified the exact VNF runtime digest.
+- Preflight and run: Confirmed Lavoisier Ready, SR-IOV CP/UP `1/1`, stable zero-restart pods, healthy P7/RU timing, `oai_prb_cap_104` telemetry, UE attachment, and rApp health. Job `6648012c-8a3e-4e58-840d-38facd224bc7` collected 1117.001092 seconds (93.0834%) at 362.269 Mbps mean delivered throughput.
+- Scheduler validation: All 7,489 captured grants used `oai_prb_cap_104`; 6,810 used 104 PRBs and no new-data grant exceeded the cap. No fatal VNF/PNF signature was found.
+- Power alignment: Exported `pdu_data_20260804_031230_033630.csv` and produced `power_throughput_summary_20260804_031316.csv`. Nineteen aligned Outlet 2 samples averaged 41.072105 W, yielding 113.375 nJ per delivered bit.
+- Validator repair: Changed expected `interrupt - the client has terminated` and idle-timeout markers to warnings only when positive UE duration meets the 80% threshold; early and unknown errors remain fatal. Regression-tested the live HPE fix and retained a recoverable backup.
+- Documentation and next condition: Added [the August 4 104-PRB run and power-alignment study note](https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-08-04_WINLAB_104-PRB_500Mbps_Run_Power_Alignment_and_rApp_Validator_Fix.md). Resolved OAI `latest` to `sha256:c227006518795bdb517db0db15be7c12850c9184297e4cb514ea3987a5108edc`; recheck it immediately before deploying the separately controlled 900 Mbps condition.
+- 900 Mbps condition: Pinned OAI `latest` by digest, recovered clean P7 with the ordered restart, and completed job `5554c656-d8af-472c-a49c-66851814a393` successfully. The UE delivered 760.715 Mbps over 1116.001097 seconds (93.0001%); the repaired validator retained the client-interrupt marker as a warning rather than falsely failing the run.
+- 900 Mbps power alignment: Exported `pdu_data_20260804_040700_043030.csv` and produced `power_throughput_summary_20260804_040735.csv`. Eighteen aligned Outlet 2 samples averaged 41.987778 W, yielding 55.195 nJ per delivered bit. Recorded 16 RLC unknown-bearer messages during a successful RRC re-establishment; traffic recovered and pods remained at zero restarts.
+- Documentation: Added [the digest-pinned OAI latest 900 Mbps run and power-alignment study note](https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-08-04_WINLAB_OAI-Latest_900Mbps_Run_and_Power_Alignment.md).
+- 900 Mbps capped sweep: Completed diagnostic-length measurements with immutable 27-, 54-, and 104-PRB images. Successful jobs were `6c7e1a73-7e4a-4c66-b1e5-77d3c7df68ba`, `24241728-e93a-4169-b001-6959de29421c`, and `1e2e5c03-6943-46ae-abeb-b71de0f1df67`. Corrected a non-pullable staged 54 digest; measurement used verified digest `sha256:307d0e269a4187df719e0d48928ce639c8084f843411bdebb121fd3b9ee983ea`.
+- 27-PRB failure/recovery: Preserved failed job `18b18926-3d1c-4893-8a24-c5d002bc65ba`, which lost traffic after 125 seconds amid unknown-RB and buffer errors. Ordered PNF-then-VNF recovery enabled a stable repeat.
+- Sweep result: 27/54/104 PRBs delivered 95.601/191.585/362.052 Mbps at 40.952/41.258/41.536 W, or 428.36/215.35/114.72 nJ/bit. OAI `latest` delivered 760.715 Mbps at 41.988 W and 55.20 nJ/bit; Outlet 2 power varied by about 1 W while throughput scaled strongly.
+- QC: Completion was 93.25%, 82.00%, 93.08%, and 93.00% for 27, 54, 104, and `latest`. No 104 new-data grant exceeded its cap; one 115-PRB retransmission was expected. Buffer events and the `latest` RRC re-establishment remain caveats; no causal or statistical claim is made.
+- Debug UI: Read-only inspection found `/home/hpe/ming-oai-debug-rapp` operates source-built host binaries, not Helm/Kubernetes images. Immutable-image support needs a separate O-Cloud backend; without immediate benefit over the rApp, integration was backlogged.
+- Final documentation: Added [the consolidated 900 Mbps PRB-cap sweep and debug-UI assessment](https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-08-04_WINLAB_900Mbps_PRB-Cap_Sweep_and_Debug-UI_Assessment.md).
+
+## 2026/08/05
+
+**Short-term Goals**
+1. Prioritize and execute the OAI `latest` baseline throughput-versus-power sweep before deeper scheduler modifications.
+2. Preserve UE attachment between bandwidth steps and recover safely when multi-step traffic orchestration stalls.
+3. [Align the valid 100–600 Mbps results with Outlet 2 power and document the initial RU power curve](https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-08-05_WINLAB_OAI-Latest_Load-Sweep_Power-Curve_and_Run-QC.md).
+
+**Daily Logs**:
+- Experiment planning: Reviewed the workspace research notes and deferred the next deeper scheduler modification until a baseline 100–900 Mbps load curve is available. Prepared the digest-pinned OAI `latest` VNF condition and configured rApp requests with `preserve_ue_state=true`, so an already attached UE would not be cycled through airplane mode between bandwidth steps.
+- Preflight and attachment recovery: Recovered the initially halted/stale VNF path with the ordered PNF-then-VNF sequence, verified UE IP attachment, and confirmed the active VNF reported source hash `95223172`. The baseline image remained `latest@sha256:c227006518795bdb517db0db15be7c12850c9184297e4cb514ea3987a5108edc`.
+- First sweep attempt: Artifact `e2e-ocloud-20260805-051900` completed the 100 Mbps step at 100.008 Mbps. Its first 200 Mbps step was partial, and the workflow was stopped when it failed to progress normally into 300 Mbps; UE airplane state was left unchanged for inspection.
+- Continuation attempt: Artifact `e2e-ocloud-20260805-060051` supplied the selected complete 200 Mbps point at 200.007 Mbps. The 300 Mbps step delivered 299.976 Mbps over a 458-second positive-traffic span but only 429 finalized samples; the stalled continuation was stopped before accepting a 400 Mbps result.
+- One-by-one recovery runs: Switched from the fragile multi-band workflow to individual steps. Artifacts `e2e-ocloud-20260805-062935` and `e2e-ocloud-20260805-064253` completed 400 and 500 Mbps for the full requested 600 seconds, delivering 399.498 and 495.066 Mbps respectively.
+- 600 Mbps QC: Excluded `e2e-ocloud-20260805-065806` because it was manually stopped without a finalized throughput CSV. Retry `e2e-ocloud-20260805-070558` delivered 549.112 Mbps for 392.001 seconds (65.333%) before server termination, so it remains an incomplete diagnostic point rather than a complete baseline measurement. Deferred 700–900 Mbps to the next reserved window.
+- Failure interpretation: Preserved evidence of RLC SDU-buffer-full reports, RRC re-establishment requests with cause `Other Failure`, and radio/VNF stalls. Treated these as evidence consistent with overload/backpressure and split-path timing instability, not proof of one root cause or of a scheduler-only failure. Cumulative pod logs must not be double-counted across steps.
+- Professor follow-up: Verified OAI tag `2026.w28` is commit `70508ebaf52f2aae420566d380c6537f2efb9f0c`; the VNF source commit `9522317237738e3c4d1f4e006dc3b27faf5904b5` is 13 commits newer. The PNF worker runtime is separate source `b045eb399b3435ea174333232a5e76a90875c2ef`, 153 commits newer with local compatibility fixes. Although the configuration permits four MIMO layers, live logs repeatedly showed UE `RI 2`, so measured operation was effectively rank two.
+- Power alignment and plots: Exported Outlet 2 `active_power` for `05:18:00Z`–`07:14:00Z`, clipped it to each actual traffic window, and generated the [consolidated CSV](https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/runs/analysis/20260805_oai_latest_baseline_100_600/load_sweep_summary.csv) and [four-panel plot](https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/runs/analysis/20260805_oai_latest_baseline_100_600/load_sweep_overview.png). Mean power was 40.594/40.992/41.020/41.326/42.015/41.953 W for 100–600 Mbps; corresponding energy intensity was 405.909/204.952/136.744/103.445/84.867/76.402 nJ/bit.
+- Initial model boundary: Across the four complete 100, 200, 400, and 500 Mbps points, delivered throughput increased 395.0% while mean power increased 3.50%. The descriptive fit `P(W) = 40.2752 + 0.0032028 × throughput(Mbps)` has `R² = 0.9246`, but only four single-run points, no repetitions, and roughly one-minute PDU sampling; it is an initial curve, not yet a validated RU power model.
+- Final documentation: Added [the August 5 OAI-latest load-sweep, power-curve, and run-QC study note](https://github.com/bmw-ntust-internship/internship/blob/2026-TEEP-2-JDavid/docs/StudyNotes/2026-08-05_WINLAB_OAI-Latest_Load-Sweep_Power-Curve_and_Run-QC.md). The temporary InfluxDB token remains in `/tmp` by user choice; its value was not recorded.

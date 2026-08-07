@@ -1,0 +1,32 @@
+{
+  "artifact_dir": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-040735",
+  "copied_ocloud_logs": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-040735/ocloud_pod_logs",
+  "e2e_returncode": 0,
+  "finished_utc": "2026-08-04T04:29:43.631276Z",
+  "iapc_host": "sshuser@140.118.162.81",
+  "iapc_port": 24,
+  "iperf_completion_ratio": 0.9300009141666667,
+  "iperf_csv": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-040735/iperf_timeseries.csv",
+  "iperf_expected_seconds": 1200,
+  "iperf_observed_seconds": 1116.001097,
+  "iperf_plot": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-040735/iperf_throughput.png",
+  "iperf_source": "ue_json",
+  "iperf_text_samples": 1115,
+  "iperf_validation_errors": [],
+  "iperf_validation_warnings": [
+    "UE iPerf error: interrupt - the client has terminated"
+  ],
+  "ming_folder": "",
+  "ming_folder_abs": "",
+  "mode": "ocloud",
+  "ocloud_log_dir": "/home/hpe/logs_e2e_20260804_122942",
+  "offered_load_csv": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-040735/offered_load_throughput.csv",
+  "offered_load_plot": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-040735/offered_load_throughput.png",
+  "postprocess_steps": [],
+  "returncode": 0,
+  "started_utc": "2026-08-04T04:07:35.865651Z",
+  "target_identity": "hpe-pegatron-ru-o",
+  "ue_iperf_json": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-040735/iperf-UE-RX.log",
+  "ue_iperf_samples": 1113,
+  "ue_serial": "R5CN30TMBYR"
+}

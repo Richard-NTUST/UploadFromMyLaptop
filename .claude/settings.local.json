@@ -17,7 +17,9 @@
       "Read(//c/Users/徐銘亨/.local/**)",
       "Bash(python3 -c ' *)",
       "Read(//d/npm-global/**)",
-      "Read(//d/npm-global/node_modules/@anthropic-ai/**)"
+      "Read(//d/npm-global/node_modules/@anthropic-ai/**)",
+      "Bash(mkdir -p /tmp/pptx_extract)",
+      "Bash(pip install *)"
     ]
   }
 }

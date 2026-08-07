@@ -1,0 +1,32 @@
+{
+  "artifact_dir": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-065538",
+  "copied_ocloud_logs": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-065538/ocloud_pod_logs",
+  "e2e_returncode": 0,
+  "finished_utc": "2026-08-04T07:14:40.697689Z",
+  "iapc_host": "sshuser@140.118.162.81",
+  "iapc_port": 24,
+  "iperf_completion_ratio": 0.8200009808333333,
+  "iperf_csv": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-065538/iperf_timeseries.csv",
+  "iperf_expected_seconds": 1200,
+  "iperf_observed_seconds": 984.001177,
+  "iperf_plot": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-065538/iperf_throughput.png",
+  "iperf_source": "ue_json",
+  "iperf_text_samples": 1106,
+  "iperf_validation_errors": [],
+  "iperf_validation_warnings": [
+    "UE iPerf error: idle timeout for receiving data"
+  ],
+  "ming_folder": "",
+  "ming_folder_abs": "",
+  "mode": "ocloud",
+  "ocloud_log_dir": "/home/hpe/logs_e2e_20260804_151440",
+  "offered_load_csv": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-065538/offered_load_throughput.csv",
+  "offered_load_plot": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-065538/offered_load_throughput.png",
+  "postprocess_steps": [],
+  "returncode": 0,
+  "started_utc": "2026-08-04T06:55:39.576220Z",
+  "target_identity": "hpe-pegatron-ru-o",
+  "ue_iperf_json": "/home/hpe/winlab_e2e_rapp/runs/winlab_e2e_rapp/e2e-ocloud-20260804-065538/iperf-UE-RX.log",
+  "ue_iperf_samples": 984,
+  "ue_serial": "R5CN30TMBYR"
+}

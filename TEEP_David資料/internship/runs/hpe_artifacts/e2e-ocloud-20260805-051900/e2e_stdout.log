@@ -1,0 +1,42 @@
+[1/6] Checking VNF and PNF pods on O-Cloud cluster...
+   > PNF Pod: oai-pnf-pegatron-74bdd64b67-bddx5 is Running & Ready
+   > VNF Pod: oai-vnf-845f4b7c6f-5ltj6 is Running & Ready
+[SUCCESS] Both VNF and PNF pods are Running and Ready!
+   > Waiting 30s for O-Cloud gNB/RU path to settle before UE attach...
+[2/6] Initializing SAMSUNG UE...
+   > Ensuring UE is online and has obtained 10.45.x.x IP...
+[SUCCESS] UE already online with IP: 10.45.0.4 (preserve-UE mode)
+[3/6] Starting iperf3 server locally on ogstun (10.45.0.1)...
+[4/6] Starting Downlink iperf test via full UE driver (bandwidths=100,200,300,400,500,600,700,800,900 Mbps, period=600s, gap=30s)...
+[UE] Stopping iperf client on device R5CN30TMBYR...
+[UE] Starting iperf client via run_iperf.bat (bandwidths: 100,200,300,400,500,600,700,800,900, uplink=False)
+[UE IPERF] Starting iperf3 automated test (Target device: R5CN30TMBYR)...
+[UE IPERF] Bandwidth list:  100,200,300,400,500,600,700,800,900
+[UE IPERF] Period list:     600
+[UE IPERF] Gap time list:   30
+[UE IPERF] Reverse flag:    -R
+[UE IPERF] 
+[UE IPERF] ======================================
+[UE IPERF] Testing bandwidth: 100M, Period: 600s, Gap: 30s
+[UE IPERF] ======================================
+[UE IPERF] 
+[UE IPERF] Test complete. Waiting 30 seconds...
+[UE IPERF] 
+[UE IPERF] ======================================
+[UE IPERF] Testing bandwidth: 200M, Period: 600s, Gap: 30s
+[UE IPERF] ======================================
+[UE IPERF] [ERROR] iperf3 adb command failed with errorlevel 1
+[UE IPERF] 
+[UE IPERF] Test complete. Waiting 30 seconds...
+[UE IPERF] 
+[UE IPERF] ======================================
+[UE IPERF] Testing bandwidth: 300M, Period: 600s, Gap: 30s
+[UE IPERF] ======================================
+
+[6/6] Leaving UE airplane mode unchanged for failure inspection.
+Traceback (most recent call last):
+  File "/home/hpe/CRAN/ocloud-helm-templates/cloud_e2e.py", line 332, in <module>
+    main()
+  File "/home/hpe/CRAN/ocloud-helm-templates/cloud_e2e.py", line 234, in main
+    time.sleep(0.5)
+KeyboardInterrupt

@@ -1,0 +1,38 @@
+diff --git a/openair1/SCHED_NR/phy_procedures_nr_gNB.c b/openair1/SCHED_NR/phy_procedures_nr_gNB.c
+--- a/openair1/SCHED_NR/phy_procedures_nr_gNB.c
++++ b/openair1/SCHED_NR/phy_procedures_nr_gNB.c
+@@ -1144,17 +1144,33 @@ static int handle_pusch_job_trigger(PHY_VARS_gNB *gNB, const NR_gNB_PUSCH_job_t
+ static NR_MU_MIMO_job_groups_t group_pusch_jobs(PHY_VARS_gNB *gNB, NR_gNB_PUSCH_job_t *pusch, int n_pusch_jobs)
+ {
+   NR_MU_MIMO_job_groups_t groups = {0};
++  bool reserved_groups[MAX_UL_PDUS_PER_SLOT] = {false};
++  for (int i = 0; i < n_pusch_jobs; ++i) {
++    const int g = pusch[i].mu_group_idx;
++    if (g < 0)
++      continue;
++    AssertFatal(g < MAX_UL_PDUS_PER_SLOT, "Invalid PUSCH group index %d\n", g);
++    reserved_groups[g] = true;
++  }
++
++  int fallback_group = 0;
+   for (int i = 0; i < n_pusch_jobs; ++i) {
+     int ULSCH_id = handle_pusch_job_trigger(gNB, &pusch[i]);
+     if (ULSCH_id < 0) {
+       continue;
+     }
+     int g = pusch[i].mu_group_idx;
+-    AssertFatal(g >= 0, "Ungrouped ULSCH_id %d\n", ULSCH_id);
++    if (g < 0) {
++      while (fallback_group < MAX_UL_PDUS_PER_SLOT && reserved_groups[fallback_group])
++        fallback_group++;
++      AssertFatal(fallback_group < MAX_UL_PDUS_PER_SLOT, "No fallback group for ULSCH_id %d\n", ULSCH_id);
++      g = fallback_group++;
++      reserved_groups[g] = true;
++    }
+     if (groups.size[g] == 0) {
+       groups.active_groups[groups.n_active_groups++] = g;
+     }
+     groups.jobs[g][groups.size[g]++] = ULSCH_id;
+   }
+   return groups;
+ }

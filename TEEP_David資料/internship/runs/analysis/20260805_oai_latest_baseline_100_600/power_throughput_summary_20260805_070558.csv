@@ -1,0 +1,2 @@
+run_id,mode,target_identity,offered_load_mbps,rx_throughput_mbps,start_utc,end_utc,avg_power_w,min_power_w,max_power_w,sample_count
+e2e-ocloud-20260805-070558,ocloud,hpe-pegatron-ru-o,600.0,549.1119857707038,2026-08-05T07:06:34Z,2026-08-05T07:13:06.000766Z,41.95333333333333,41.41,42.24,6

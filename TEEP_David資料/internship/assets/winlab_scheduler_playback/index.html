@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WINLAB Single-UE Scheduler Playback</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">W</div>
+        <div>
+          <p class="eyebrow">WINLAB RADIO MEASUREMENT</p>
+          <h1>Single-UE Scheduler Playback</h1>
+        </div>
+      </div>
+      <div class="run-badges" aria-label="Run classification">
+        <span class="badge measured">Measured</span>
+        <span class="badge capped">27-PRB cap</span>
+        <span class="badge">30 Jul 2026</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="headline-band" aria-labelledby="phase-title">
+        <div>
+          <p class="eyebrow" id="phase-label">ACTIVE DOWNLINK</p>
+          <h2 id="phase-title">One UE under a capped proportional-fair scheduler</h2>
+          <p id="phase-subtitle">200 Mbps offered load with a measured scheduler capture and run-level throughput and power.</p>
+        </div>
+        <div class="coverage">
+          <span class="status-dot" aria-hidden="true"></span>
+          <div>
+            <span>Dense scheduler capture</span>
+            <strong id="coverage-value">00:00-00:09 relative time</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="playback-layout" aria-label="Live scheduler state">
+        <article class="panel ue-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">CONNECTED DEVICE</p>
+              <h3>Samsung UE</h3>
+            </div>
+            <span class="live-pill"><span></span>Traffic active</span>
+          </div>
+
+          <div class="radio-path" aria-label="UE to gNB data path">
+            <div class="device-node">
+              <span class="device-screen"></span>
+              <strong>UE</strong>
+            </div>
+            <div class="packet-track" aria-hidden="true">
+              <i></i><i></i><i></i>
+            </div>
+            <div class="gnb-node">
+              <span class="mast"></span>
+              <span class="signal signal-one"></span>
+              <span class="signal signal-two"></span>
+              <strong>gNB</strong>
+            </div>
+          </div>
+
+          <dl class="identity-list">
+            <div><dt>RNTI</dt><dd id="rnti-value">-</dd></div>
+            <div><dt>Direction</dt><dd>Downlink</dd></div>
+            <div><dt>MIMO layers</dt><dd id="layers-value">-</dd></div>
+            <div><dt>Scheduler</dt><dd>Proportional fair</dd></div>
+          </dl>
+        </article>
+
+        <article class="panel grant-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">CURRENT GRANT</p>
+              <h3 id="grant-state">New transmission</h3>
+            </div>
+            <span class="slot-label" id="slot-value">Frame -- / slot --</span>
+          </div>
+
+          <div class="grant-allocation">
+            <div class="grant-number">
+              <strong id="grant-prbs">27</strong>
+              <span>PRBs allocated</span>
+            </div>
+            <div class="allocation-track" aria-label="Current grant size relative to the 27 PRB experiment cap">
+              <span id="allocation-fill"></span>
+              <i id="allocation-cap">experiment cap</i>
+            </div>
+            <div class="allocation-scale"><span>0</span><span>27 PRBs</span></div>
+          </div>
+
+          <dl class="grant-stats">
+            <div><dt>MCS</dt><dd id="mcs-value">-</dd></div>
+            <div><dt>TBS</dt><dd id="tbs-value">-</dd></div>
+            <div><dt>HARQ PID</dt><dd id="harq-value">-</dd></div>
+            <div><dt>Symbols</dt><dd id="symbols-value">-</dd></div>
+          </dl>
+        </article>
+
+        <article class="panel grid-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">ALLOCATION HISTORY</p>
+              <h3>Rolling PRB grant size</h3>
+            </div>
+            <span class="slot-label" id="dominant-grant-note">Measured distribution</span>
+          </div>
+          <canvas id="resource-grid" width="720" height="330" aria-label="Rolling mean and maximum PRBs allocated to the logged UE"></canvas>
+          <div class="legend" aria-label="Resource-grid legend">
+            <span><i class="new-data"></i>Mean grant</span>
+            <span><i class="maximum-grant"></i>Maximum grant</span>
+            <span><i class="retransmission"></i>Retransmissions present</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="metrics-band" aria-labelledby="behavior-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">SCHEDULER CAPTURE</p>
+            <h2 id="behavior-title">Allocation at relative time <span id="elapsed-value">00:00.0</span></h2>
+          </div>
+          <p class="mode-value">mode=<strong>oai_prb_cap_27</strong></p>
+        </div>
+        <div class="metric-grid">
+          <div class="metric"><span>Run mean throughput</span><strong id="throughput-value">-</strong><small>Mbps</small></div>
+          <div class="metric"><span>Run mean active power</span><strong id="power-value">-</strong><small>W</small></div>
+          <div class="metric"><span>Grants / second</span><strong id="grant-count-value">-</strong><small>logged</small></div>
+          <div class="metric"><span>Mean grant</span><strong id="mean-prbs-value">-</strong><small>PRBs</small></div>
+          <div class="metric"><span>Retransmissions</span><strong id="retx-rate-value">-</strong><small>%</small></div>
+        </div>
+      </section>
+
+      <section class="timeline-section" aria-labelledby="timeline-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">FULL POSITIVE-TRAFFIC WINDOW</p>
+            <h2 id="timeline-title">Throughput and PDU active power</h2>
+          </div>
+          <div class="timeline-summary">
+            <span><i class="throughput-line"></i>Throughput</span>
+            <span><i class="power-line"></i>Power</span>
+          </div>
+        </div>
+        <canvas id="timeline-chart" width="1280" height="330" aria-label="Full-run throughput and active-power timeline"></canvas>
+        <div class="coverage-note">
+          <span>Dense scheduler capture: <strong id="scheduler-duration-note">00:09</strong></span>
+          <span>Positive traffic: <strong id="traffic-duration-note">18:40</strong></span>
+          <span>Requested: <strong id="requested-duration-note">30:00</strong></span>
+        </div>
+      </section>
+
+      <section class="finding-band" aria-label="Run finding">
+        <div>
+          <p class="eyebrow">VALIDATED</p>
+          <h2>No logged allocation exceeded 27 PRBs.</h2>
+        </div>
+        <div class="finding-detail">
+          <strong id="event-count-value">14,072 grants</strong>
+          <span>Live scheduler evidence</span>
+        </div>
+        <div class="finding-detail warning">
+          <strong id="completion-value">62.2% complete</strong>
+          <span>Traffic ended on UE idle timeout</span>
+        </div>
+      </section>
+    </main>
+
+    <div class="playback-controls" role="group" aria-label="Playback controls">
+      <button id="reset-button" class="icon-button" type="button" title="Reset playback" aria-label="Reset playback">Reset</button>
+      <button id="play-button" class="primary-control" type="button" aria-label="Play scheduler playback">Play</button>
+      <label class="scrubber">
+        <span class="sr-only">Playback position</span>
+        <input id="time-slider" type="range" min="0" max="130" value="0" step="0.05">
+      </label>
+      <div class="speed-control" aria-label="Playback speed">
+        <button type="button" data-speed="1" class="active">1x</button>
+        <button type="button" data-speed="5">5x</button>
+        <button type="button" data-speed="10">10x</button>
+        <button type="button" data-speed="30">30x</button>
+      </div>
+    </div>
+
+    <script src="data/run-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
